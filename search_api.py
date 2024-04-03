@@ -2,10 +2,19 @@ from google.oauth2.service_account import Credentials
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 from fastapi import FastAPI
-
+from fastapi.middleware.cors import CORSMiddleware
 
 #fastapiの有効化
 app = FastAPI()
+
+# FastAPI に CORS ミドルウェアを追加
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"], # 任意のオリジンからのリクエストを許可
+    allow_credentials=True,
+    allow_methods=["*"], # 任意の HTTP メソッドを許可
+    allow_headers=["*"], # 任意のヘッダーを許可
+)
 
 api_path = r'C:\Users\sabax\Documents\Python\API_check\apitest-418907-1658bd7509d0.json'
 folder_id = '163LOPPPAgKUZXpegrYbBbZkGntFnH5-v'

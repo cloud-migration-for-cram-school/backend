@@ -1,0 +1,59 @@
+{
+    "report": {
+      "basicInfo": {
+        "date": "",
+        "subjectName": "",
+        "instructorName": "",
+        "progressInSchool": "",
+        "homeworkProgress": 0,
+        "homeworkAccuracy": 0
+      },
+      "instructorNotes": {
+        "nextInstructor": "",
+        "directorNotes": ""
+      },
+      "testReview": {
+        "testAccuracy": 0,
+        "classTestStatus": "",
+        "nextSteps": ""
+      },
+      "lessonDetails": [
+        {
+          "material": "",
+          "chapter": "",
+          "accuracy": 0,
+          "strengthsAndAreasForImprovement": ""
+        },
+        {
+          "material": "",
+          "chapter": "",
+          "accuracy": 0,
+          "strengthsAndAreasForImprovement": ""
+        },
+        {
+          "material": "",
+          "chapter": "",
+          "accuracy": 0,
+          "strengthsAndAreasForImprovement": ""
+        },
+        {
+          "material": "",
+          "chapter": "",
+          "accuracy": 0,
+          "strengthsAndAreasForImprovement": ""
+        },
+        {
+          "material": "",
+          "chapter": "",
+          "accuracy": 0,
+          "strengthsAndAreasForImprovement": ""
+        },
+        {
+          "material": "",
+          "chapter": "",
+          "accuracy": 0,
+          "strengthsAndAreasForImprovement": ""
+        }
+      ]
+    }
+}
