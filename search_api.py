@@ -1,8 +1,10 @@
 from google.oauth2.service_account import Credentials
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
+import gspread
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+import datetime
 
 #fastapiの有効化
 app = FastAPI()
@@ -27,6 +29,8 @@ credentials = Credentials.from_service_account_file(
     scopes = scopes
 )
 
+
+
 #google drive内のファイル名とIDを取得
 @app.get('/search')
 def get_search_info():
@@ -45,3 +49,38 @@ def get_search_info():
     except HttpError as error:
         message = f'エラー: {error.content.decode("utf-8")}'
         return message
+
+
+#検索画面後の画面の遷移
+@app.post('/search/result')
+def user_info(username, sheetid):
+    service = build('drive', 'v3', credentials = credentials)
+    query = f"'{folder_id}' in parents"
+    #フォルダー内のファイル名を全て取得
+    results = service.files().list(q = query, fields = 'files(id, name)').execute()
+    items = results.get('files', [])
+    file_names = [item['name'] for item in items]
+    #編集権限
+    gc = gspread.authorize(credentials)
+    try:
+        now_date = datetime.datetime.get().now()
+        #ファイル名のfor文
+        for user in file_names:
+            if username == user:
+                sheet_url = f'https://docs.google.com/spreadsheets/d/{sheetid}/edit?usp=sharing'
+                spreadsheet = gc.open_by_url(sheet_url)
+                #シートを全て取得
+                worksheet_lists = spreadsheet.worksheets()
+                worksheet_lists.remove('閲覧用')
+                #科目名のfor文
+                for sheet_name in worksheet_lists:
+                    get_sheet_info = spreadsheet.worksheet(f'{sheet_name}')
+                    #最近更新されたセルの値を取得する 4/6ここからどうしよう 
+                    #4/8 現在の時間から比較することにしようかなと思います。だけど1/31と1/1のときとか新しい生徒の情報の取得をするときに大丈夫かな
+                    #シートの名前での日付の比較
+                    row = 2
+                    while True:
+                        compar_day = get_sheet_info.cell(1, row).value
+                        #日付の比較
+    except:
+        pass
