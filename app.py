@@ -102,8 +102,159 @@ def get_old_sheet(postionCell, sheet_data):
             "basicInfo": {
                 "dateAndTime": sheet_data.cell(1, postionCell[i]).value, "subjectName": sheet_data.cell(1, postionCell[i]+1).value, "teacherName": sheet_data.cell(1, postionCell[i]+2).value,
                 "progressInSchool": sheet_data.cell(2, postionCell[i]).value, "homeworkProgress": sheet_data.cell(2, postionCell[i]+1).value, "homeworkAccuracy": sheet_data.cell(2, postionCell[i]+2).value,
-            }
-        }
+                            },  
+            "communication": {
+                "forNextTeacher": "分数の授業を開始してください。",
+                "fromDirector": "追加の練習問題を割り当てる",
+                            },
+            "testReview": {
+                "testAccuracy": 85, "classOverallStatus":"分数の計算が全体的にできていた。しかし約分の処理を忘れていて数問落としていた。",
+                    "rationale": "クラス全体の正答率が80%を超えているため",
+                    },
+            "lessonDetails": [
+                {
+                "material": "教科書",
+                "chapter": "第5章 分数",
+                "accuracy": 90,
+                },
+                {
+                "material": "教科書",
+                "chapter": "第6章 分数",
+                "accuracy": 90,
+                },
+                {
+                "material": "教科書",
+                "chapter": "第7章 分数",
+                "accuracy": 90,
+                },
+                {
+                "material": "教科書",
+                "chapter": "第8章 分数",
+                "accuracy": 90,
+                },
+                {
+                "material": "教科書",
+                "chapter": "第9章 分数",
+                "accuracy": 90,
+                },
+                {
+                "material": "教科書",
+                "chapter": "第10章 分数",
+                "accuracy": 90,
+                },
+                {
+                "strengthsAndAreasForImprovement":"計算は正確だが、問題の解釈を改善する必要あり",
+                },
+            ],
+            "homework": {
+                "assignments": [
+                {
+                    "day": "day1",
+                    "tasks": [
+                    {
+                        "material": "教科書",
+                        "rangeAndPages": "p.100-105",
+                    },
+                    {
+                        "material": "ワークブック",
+                        "rangeAndPages": "p.20-25",
+                    },
+                    ],
+                },
+                {
+                    "day": "day2",
+                    "tasks": [
+                    {
+                        "material": "教科書",
+                        "rangeAndPages": "p.106-110",
+                    },
+                    {
+                        "material": "ワークブック",
+                        "rangeAndPages": "p.26-30",
+                    },
+                       ],
+                },
+                {
+                        "day": "day3",
+                        "tasks": [
+                        {
+                            "material": "教科書",
+                            "rangeAndPages": "p.111-115",
+                        },
+                        {
+                            "material": "ワークブック",
+                            "rangeAndPages": "p.31-35",
+                        },
+                        ],
+                    },
+                    {
+                        "day": "day4",
+                        "tasks": [
+                        {
+                            "material": "教科書",
+                            "rangeAndPages": "p.116-120",
+                        },
+                        {
+                            "material": "ワークブック",
+                            "rangeAndPages": "p.36-40",
+                        },
+                        ],
+                    },
+                    {
+                        "day": "day5",
+                        "tasks": [
+                        {
+                            "material": "教科書",
+                            "rangeAndPages": "p.121-125",
+                        },
+                        {
+                            "material": "ワークブック",
+                            "rangeAndPages": "p.41-45",
+                        },
+                        ],
+                    },
+                    {
+                        "day": "day6",
+                        "tasks": [
+                        {
+                            "material": "教科書",
+                            "rangeAndPages": "p.126-130",
+                        },
+                        {
+                            "material": "ワークブック",
+                            "rangeAndPages": "p.46-50",
+                        },
+                        ],
+                    },
+                    ],
+                    "advice": "公式を覚えることから始めましょう。",
+                    "noteForNextSession": "コンパス、分度器",
+                },
+            "nextTest": [
+                    {
+                    "material": "英単語",
+                    "chapter": "第6章 比率",
+                    "rangeAndPages": "p.110-115",
+                    },
+                    {
+                    "material": "英単語",
+                    "chapter": "第6章 比率",
+                    "rangeAndPages": "p.110-115",
+                    },
+                    {
+                    "material": "英単語",
+                    "chapter": "第6章 比率",
+                    "rangeAndPages": "p.110-115",
+                    },
+                ],
+            "studentStatus": "",
+            "lessonPlan": {
+                    "ifTestOK": "第7章に進む",
+                    "ifTestNG": "第6章の復習",
+                },
+        };
+
+    
         old_sheets.append(log_sheet_data)
     # old_sheets を JSON 形式の文字列に変換して返す
     return json.dumps(old_sheets, ensure_ascii=False, indent=4)
