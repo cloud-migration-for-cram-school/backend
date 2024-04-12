@@ -54,7 +54,7 @@ def get_search_info():
 
 
 #検索画面後の画面の遷移
-@app.post('/search/{sheetid}')
+#@app.post('/search/{sheetid}')
 def user_info(sheetid: str):
     format_str = "%m/%d %H:%M"
     row = 2
@@ -104,161 +104,158 @@ def get_old_sheet(postionCell, sheet_data):
                 "progressInSchool": sheet_data.cell(2, postionCell[i]).value, "homeworkProgress": sheet_data.cell(2, postionCell[i]+1).value, "homeworkAccuracy": sheet_data.cell(2, postionCell[i]+2).value,
                             },  
             "communication": {
-                "forNextTeacher": "分数の授業を開始してください。",
-                "fromDirector": "追加の練習問題を割り当てる",
+                "forNextTeacher": sheet_data.cell(3, postionCell[i]).value,
+                "fromDirector": sheet_data.cell(5, postionCell[i]).value,
                             },
             "testReview": {
-                "testAccuracy": 85, "classOverallStatus":"分数の計算が全体的にできていた。しかし約分の処理を忘れていて数問落としていた。",
-                    "rationale": "クラス全体の正答率が80%を超えているため",
+                "testAccuracy": sheet_data.cell(8, postionCell[i]-1).value, "classOverallStatus":sheet_data.cell(7, postionCell[i]+1),
+                    "rationale": sheet_data.cell(9, postionCell[i]+1),
                     },
             "lessonDetails": [
                 {
-                "material": "教科書",
-                "chapter": "第5章 分数",
-                "accuracy": 90,
+                "material": sheet_data.cell(11, postionCell[i]-1).value,
+                "chapter": sheet_data.cell(11, postionCell[i]).value,
+                "accuracy": sheet_data.cell(11, postionCell[i]+1).value,
                 },
                 {
-                "material": "教科書",
-                "chapter": "第6章 分数",
-                "accuracy": 90,
+                "material": sheet_data.cell(12, postionCell[i]-1).value,
+                "chapter": sheet_data.cell(12, postionCell[i]).value,
+                "accuracy": sheet_data.cell(12, postionCell[i]+1).value,
                 },
                 {
-                "material": "教科書",
-                "chapter": "第7章 分数",
-                "accuracy": 90,
+                "material": sheet_data.cell(13, postionCell[i]-1).value,
+                "chapter": sheet_data.cell(13, postionCell[i]).value,
+                "accuracy": sheet_data.cell(13, postionCell[i]+1).value,
                 },
                 {
-                "material": "教科書",
-                "chapter": "第8章 分数",
-                "accuracy": 90,
+                "material": sheet_data.cell(11, postionCell[i]+2).value,
+                "chapter": sheet_data.cell(11, postionCell[i]+3).value,
+                "accuracy": sheet_data.cell(11, postionCell[i]+4).value,
                 },
                 {
-                "material": "教科書",
-                "chapter": "第9章 分数",
-                "accuracy": 90,
+                "material": sheet_data.cell(12, postionCell[i]+2).value,
+                "chapter": sheet_data.cell(12, postionCell[i]+3).value,
+                "accuracy": sheet_data.cell(12, postionCell[i]+4).value,
                 },
                 {
-                "material": "教科書",
-                "chapter": "第10章 分数",
-                "accuracy": 90,
+                "material": sheet_data.cell(13, postionCell[i]+2).value,
+                "chapter": sheet_data.cell(13, postionCell[i]+3).value,
+                "accuracy": sheet_data.cell(13, postionCell[i]+4).value,
                 },
                 {
-                "strengthsAndAreasForImprovement":"計算は正確だが、問題の解釈を改善する必要あり",
+                "strengthsAndAreasForImprovement":sheet_data.cell(14, postionCell[i]),
                 },
             ],
             "homework": {
                 "assignments": [
                 {
-                    "day": "day1",
+                    "day": sheet_data.cell(18, postionCell[i]),
                     "tasks": [
                     {
-                        "material": "教科書",
-                        "rangeAndPages": "p.100-105",
+                        "material": sheet_data.cell(18, postionCell[i]+1),
+                        "rangeAndPages": sheet_data.cell(18, postionCell[i]+2),
                     },
                     {
-                        "material": "ワークブック",
-                        "rangeAndPages": "p.20-25",
+                        "material": sheet_data.cell(18, postionCell[i]+3),
+                        "rangeAndPages": sheet_data.cell(18, postionCell[i]+4),
                     },
                     ],
                 },
                 {
-                    "day": "day2",
+                    "day": sheet_data.cell(19, postionCell[i]),
                     "tasks": [
                     {
-                        "material": "教科書",
-                        "rangeAndPages": "p.106-110",
+                        "material": sheet_data.cell(19, postionCell[i]+1),
+                        "rangeAndPages": sheet_data.cell(19, postionCell[i]+2),
                     },
                     {
-                        "material": "ワークブック",
-                        "rangeAndPages": "p.26-30",
-                    },
-                       ],
-                },
-                {
-                        "day": "day3",
-                        "tasks": [
-                        {
-                            "material": "教科書",
-                            "rangeAndPages": "p.111-115",
-                        },
-                        {
-                            "material": "ワークブック",
-                            "rangeAndPages": "p.31-35",
-                        },
-                        ],
-                    },
-                    {
-                        "day": "day4",
-                        "tasks": [
-                        {
-                            "material": "教科書",
-                            "rangeAndPages": "p.116-120",
-                        },
-                        {
-                            "material": "ワークブック",
-                            "rangeAndPages": "p.36-40",
-                        },
-                        ],
-                    },
-                    {
-                        "day": "day5",
-                        "tasks": [
-                        {
-                            "material": "教科書",
-                            "rangeAndPages": "p.121-125",
-                        },
-                        {
-                            "material": "ワークブック",
-                            "rangeAndPages": "p.41-45",
-                        },
-                        ],
-                    },
-                    {
-                        "day": "day6",
-                        "tasks": [
-                        {
-                            "material": "教科書",
-                            "rangeAndPages": "p.126-130",
-                        },
-                        {
-                            "material": "ワークブック",
-                            "rangeAndPages": "p.46-50",
-                        },
-                        ],
+                        "material": sheet_data.cell(19, postionCell[i]+3),
+                        "rangeAndPages": sheet_data.cell(19, postionCell[i]+4),
                     },
                     ],
-                    "advice": "公式を覚えることから始めましょう。",
-                    "noteForNextSession": "コンパス、分度器",
+                },
+                {
+                    "day": sheet_data.cell(20, postionCell[i]),
+                    "tasks": [
+                    {
+                        "material": sheet_data.cell(20, postionCell[i]+1),
+                        "rangeAndPages": sheet_data.cell(20, postionCell[i]+2),
+                    },
+                    {
+                        "material": sheet_data.cell(20, postionCell[i]+3),
+                        "rangeAndPages": sheet_data.cell(20, postionCell[i]+4),
+                    },
+                    ],
+                },
+                {
+                    "day": sheet_data.cell(21, postionCell[i]),
+                    "tasks": [
+                    {
+                        "material": sheet_data.cell(21, postionCell[i]+1),
+                        "rangeAndPages": sheet_data.cell(21, postionCell[i]+2),
+                    },
+                    {
+                        "material": sheet_data.cell(21, postionCell[i]+3),
+                        "rangeAndPages": sheet_data.cell(21, postionCell[i]+4),
+                    },
+                    ],
+                },
+                {
+                    "day": sheet_data.cell(22, postionCell[i]),
+                    "tasks": [
+                    {
+                        "material": sheet_data.cell(22, postionCell[i]+1),
+                        "rangeAndPages": sheet_data.cell(22, postionCell[i]+2),
+                    },
+                    {
+                        "material": sheet_data.cell(22, postionCell[i]+3),
+                        "rangeAndPages": sheet_data.cell(22, postionCell[i]+4),
+                    },
+                    ],
+                },
+                {
+                    "day": sheet_data.cell(23, postionCell[i]),
+                    "tasks": [
+                    {
+                        "material": sheet_data.cell(23, postionCell[i]+1),
+                        "rangeAndPages": sheet_data.cell(23, postionCell[i]+2),
+                    },
+                    {
+                        "material": sheet_data.cell(23, postionCell[i]+3),
+                        "rangeAndPages": sheet_data.cell(23, postionCell[i]+4),
+                    },
+                    ],
+                },
+                    ],
+                    "advice": sheet_data.cell(24, postionCell[i]+2),
+                    "noteForNextSession": sheet_data.cell(25, postionCell[i]+2),
                 },
             "nextTest": [
                     {
-                    "material": "英単語",
-                    "chapter": "第6章 比率",
-                    "rangeAndPages": "p.110-115",
+                    "material": sheet_data.cell(27, postionCell[i]).value,
+                    "chapter": sheet_data.cell(27, postionCell[i]+1).value,
+                    "rangeAndPages": sheet_data.cell(27, get_closest_positions[i]+2).value,
                     },
                     {
-                    "material": "英単語",
-                    "chapter": "第6章 比率",
-                    "rangeAndPages": "p.110-115",
+                    "material": sheet_data.cell(28, postionCell[i]).value,
+                    "chapter": sheet_data.cell(28, postionCell[i]+1).value,
+                    "rangeAndPages": sheet_data.cell(28, get_closest_positions[i]+2).value,
                     },
                     {
-                    "material": "英単語",
-                    "chapter": "第6章 比率",
-                    "rangeAndPages": "p.110-115",
+                    "material": sheet_data.cell(29, postionCell[i]).value,
+                    "chapter": sheet_data.cell(29, postionCell[i]+1).value,
+                    "rangeAndPages": sheet_data.cell(29, get_closest_positions[i]+2).value,
                     },
                 ],
-            "studentStatus": "",
+            "studentStatus": sheet_data.cell(32, get_closest_positions[i]+1).value,
             "lessonPlan": {
-                    "ifTestOK": "第7章に進む",
-                    "ifTestNG": "第6章の復習",
+                    "ifTestOK": sheet_data.cell(34, get_closest_positions[i]+1).value,
+                    "ifTestNG": sheet_data.cell(36, get_closest_positions[i]+1).value,
                 },
         };
-
-    
         old_sheets.append(log_sheet_data)
     # old_sheets を JSON 形式の文字列に変換して返す
     return json.dumps(old_sheets, ensure_ascii=False, indent=4)
 
 if __name__ == '__main__':
-    pass
-    #print(user_info(sheetid='1CEn2feUeQMfq885PVtyX96-ImOQxeqypeyePHpnPMg4'))
+    print(user_info(sheetid='1CEn2feUeQMfq885PVtyX96-ImOQxeqypeyePHpnPMg4'))
