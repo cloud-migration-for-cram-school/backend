@@ -7,6 +7,8 @@ from fastapi.middleware.cors import CORSMiddleware
 import datetime
 import heapq
 import json
+from openpyxl.utils import get_column_letter
+
 
 #fastapiの有効化
 app = FastAPI()
@@ -54,7 +56,7 @@ def get_search_info():
 
 
 #検索画面後の画面の遷移
-#@app.post('/search/{sheetid}')
+@app.get('/search/{sheetid}')
 def user_info(sheetid: str):
     format_str = "%m/%d %H:%M"
     row = 2
@@ -80,18 +82,37 @@ def user_info(sheetid: str):
             dates_positions.append((f_format_day, row))
             row += 7
         closest_positions = get_closest_positions(dates_positions, f_now_date)
-        log_sheet = get_old_sheet(postionCell=closest_positions, sheet_data=get_sheet_info) #過去のセルの取得
-        sheet_log_dict[get_sheet_info.title] = log_sheet
-    return sheet_log_dict
+        print(closest_positions)
+        log_sheet = get_old_sheet2(postionCell=closest_positions, sheet_data=get_sheet_info) #過去のセルの取得
+        #sheet_log_dict[get_sheet_info.title] = log_sheet
+    #return sheet_log_dict
+    return print(log_sheet)
+
 
 
 #取得した日付のセルの位置を取得
 def get_closest_positions(dates_positions, target_date):
     format_str = "%m/%d %H:%M"
     differences = [abs(datetime.datetime.strptime(target_date, format_str) - datetime.datetime.strptime(date_position[0], format_str)) for date_position in dates_positions]
-    #nsmallestの引数(4, ..)で取得する枚数を指定する
-    closest_indices = heapq.nsmallest(4, range(len(differences)), key=differences.__getitem__)
-    return [dates_positions[i][1] for i in closest_indices]
+    closest_indices = heapq.nsmallest(3, range(len(differences)), key=differences.__getitem__)
+    # 列のインデックスをA1表記に変換
+    return [(get_column_letter(dates_positions[i][1]), dates_positions[i][0]) for i in closest_indices]
+
+
+def export_cell_position(value):
+    # 列のインデックスをA1表記に変換
+    column_letter = get_column_letter(value)
+    return column_letter
+
+
+def get_old_sheet2(postionCell, sheet_data):
+    try:
+        for i in range(len(postionCell)):
+            sub_name = sheet_data.worksheet(f'{i}')
+            base_data = sub_name.batch_get('1 : 37', f'{postionCell[i]-1} : {postionCell[i]+4}')
+        return print(base_data)
+    except:
+        pass
 
 #過去の資料の取得
 def get_old_sheet(postionCell, sheet_data):
