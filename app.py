@@ -22,7 +22,7 @@ app.add_middleware(
     allow_headers=["*"], # 任意のヘッダーを許可
 )
 
-api_path = r'C:\Users\sabax\Documents\Python\API_check\apitest-418907-1658bd7509d0.json'
+api_path = r"C:\Users\sabax\Documents\APIkey\google\apitest-418907-1658bd7509d0.json"
 folder_id = '163LOPPPAgKUZXpegrYbBbZkGntFnH5-v'
 
 #google driveに設定
@@ -62,10 +62,15 @@ class SpreadsheetService:
         return [{'sub': ws.title, 'id': ws.id} for ws in worksheets]
     
     def get_date_info(self, id, sheetname):
+        """
+        日付の入った行の値を取得
+        returnは配列
+        """
         sheet_url = f'https://docs.google.com/spreadsheets/d/{id}/edit?usp=sharing'
         spreadsheet = self.gc.open_by_url(sheet_url)
         spreadsheet = spreadsheet.worksheet(sheetname)
-        compar_day = spreadsheet.get_all_values(1)
+        compar_day = spreadsheet.row_values(1)
+        print(compar_day)
         
 
     def get_closest_positions(self, dates_positions, target_date):
@@ -77,6 +82,27 @@ class SpreadsheetService:
         differences = [abs(datetime.datetime.strptime(target_date, format_str) - datetime.datetime.strptime(date_position[0], format_str)) for date_position in dates_positions]
         closest_indices = heapq.nsmallest(3, range(len(differences)), key=differences.__getitem__)
         return [(dates_positions[i][1]) for i in closest_indices]
+    
+    def closetDataFinder(self, id, sheetname):
+        """
+        取得した日付と近い順に３つ値と位置を取得する
+        returnはint 位置のみ
+        詳細:
+        if 取得した月 > セルのデータ月 ->  +21列 持っていたデータの保存(最初は最初に比較するセルの保持)
+        elif 取得した月 == セルのデータ月 -> データの保存して日付の比較
+        セルの値がNoneだったらbreak
+        
+        最後に残ったデータの位置から
+        """
+        sheet_url = f'https://docs.google.com/spreadsheets/d/{id}/edit?usp=sharing'
+        spreadsheet = self.gc.open_by_url(sheet_url)
+        spreadsheet = spreadsheet.worksheet(sheetname)
+
+        format_str = "%m/%d %H:%M"
+        now_date = datetime.datetime.now()
+        f_now_date = now_date.strftime(format_str)
+        
+        pass
 
     def get_old_sheet(self, postionCell, sub_name):
         for i in range(len(postionCell)):
