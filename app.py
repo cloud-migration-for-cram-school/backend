@@ -38,7 +38,9 @@ class SpreadsheetService:
         self.credentials = credentials
         self.gc = gspread.authorize(credentials)
         #Google Drive APIに接続
-        self.service = build('drive', 'v3', credentials = credentials)
+        self.drive_service = build('drive', 'v3', credentials=credentials)
+        # Google Sheets APIに接続
+        self.sheets_service = build('sheets', 'v4', credentials=credentials)
         self.query = f"'{folder_id}' in parents"
 
     def get_info(self):
@@ -51,6 +53,25 @@ class SpreadsheetService:
             return items
         except Exception as e:
             print(e)
+    
+    def get_subject(self, sheet_id):
+        """
+        選択されたファイルのシート名とシート名に対応したIDを取得する
+        """
+        # Google Sheets APIを使用してスプレッドシートの情報を取得
+        spreadsheet_info = self.sheets_service.spreadsheets().get(spreadsheetId=sheet_id).execute()
+
+        # gspreadを使用してスプレッドシートを開く
+        spreadsheet = self.gc.open_by_key(sheet_id)
+
+        # シートの情報を抽出
+        sheet_info = []
+        for sheet in spreadsheet_info['sheets']:
+            sheet_id = sheet['properties']['sheetId']
+            sheet_name = sheet['properties']['title']
+            sheet_info.append({'label': sheet_name, 'value': str(sheet_id)})
+        return sheet_info
+
 
     def get_worksheet(self, sheetid):
         """
@@ -60,6 +81,7 @@ class SpreadsheetService:
         spreadsheet = self.gc.open_by_url(sheet_url)
         worksheets = spreadsheet.worksheets()
         return [{'sub': ws.title, 'id': ws.id} for ws in worksheets]
+
 
     def get_date_info(self, id, sheetname):
         """
@@ -186,9 +208,17 @@ def get_search_info():
 
 
 
+@app.get('/search/subjects/{sheet_id}')
+def get_subjects(sheet_id: str):
+    subject = sp.get_subject(sheet_id)
+    return subject
+
+
+
 #検索画面後の画面の遷移
-@app.get('/search/{sheetid}')
+@app.get('/search/subjects/{sheetid}')
 def user_info2(sheet_id: str):
+    #科目のIDが渡されるから修正する
     format_str = "%m/%d %H:%M"
     row = 2
 
@@ -217,7 +247,7 @@ def user_info2(sheet_id: str):
 
 
 
-@app.get('/search/{sheet_id}')
+@app.get('/search/{sheet_id}/{sbjects_id}')
 def user_info(sheet_id: str):
     format_str = "%m/%d %H:%M"
     now_date = datetime.datetime.now()
@@ -242,5 +272,5 @@ def export_cell_position(value):
 
 
 if __name__ == '__main__':
-    z = user_info(sheet_id='1CEn2feUeQMfq885PVtyX96-ImOQxeqypeyePHpnPMg4')
+    z = get_subjects(sheet_id='1CEn2feUeQMfq885PVtyX96-ImOQxeqypeyePHpnPMg4')
     print(z)
