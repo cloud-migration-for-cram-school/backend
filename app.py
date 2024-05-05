@@ -11,7 +11,7 @@ from openpyxl.utils import get_column_letter
 
 
 #fastapiの有効化
-app = FastAPI()
+app = FastAPI(debug=True)
 
 # FastAPI に CORS ミドルウェアを追加
 app.add_middleware(
@@ -48,29 +48,12 @@ class SpreadsheetService:
         スプレッドシートのファイル名とIDを取得
         """
         try:
-            results = self.service.files().list(q = self.query, fields = 'files(id, name)').execute()
+            results = self.drive_service.files().list(q=self.query, fields='files(name, id)').execute()
             items = results.get('files', [])
             return items
         except Exception as e:
             print(e)
-    
-    def get_subject(self, sheet_id):
-        """
-        選択されたファイルのシート名とシート名に対応したIDを取得する
-        """
-        # Google Sheets APIを使用してスプレッドシートの情報を取得
-        spreadsheet_info = self.sheets_service.spreadsheets().get(spreadsheetId=sheet_id).execute()
 
-        # gspreadを使用してスプレッドシートを開く
-        spreadsheet = self.gc.open_by_key(sheet_id)
-
-        # シートの情報を抽出
-        sheet_info = []
-        for sheet in spreadsheet_info['sheets']:
-            sheet_id = sheet['properties']['sheetId']
-            sheet_name = sheet['properties']['title']
-            sheet_info.append({'label': sheet_name, 'value': str(sheet_id)})
-        return sheet_info
 
 
     def get_worksheet(self, sheetid):
@@ -80,7 +63,7 @@ class SpreadsheetService:
         sheet_url = f'https://docs.google.com/spreadsheets/d/{sheetid}/edit?usp=sharing'
         spreadsheet = self.gc.open_by_url(sheet_url)
         worksheets = spreadsheet.worksheets()
-        return [{'sub': ws.title, 'id': ws.id} for ws in worksheets]
+        return [{'label': ws.title, 'value': ws.id} for ws in worksheets]
 
 
     def get_date_info(self, id, sheetname):
@@ -111,10 +94,6 @@ class SpreadsheetService:
         """
         取得した日付と近い順に３つ値と位置を取得する
         returnはint 位置のみ
-        詳細:
-        if 取得した月 > セルのデータ月 ->  +21列 持っていたデータの保存(最初は最初に比較するセルの保持)
-        elif 取得した月 == セルのデータ月 -> データの保存して周辺の日付の比較
-        セルの値がNoneだったらbreak
         """
         sheet_url = f'https://docs.google.com/spreadsheets/d/{id}/edit?usp=sharing'
         spreadsheet = self.gc.open_by_url(sheet_url)
@@ -124,27 +103,24 @@ class SpreadsheetService:
         now_date = datetime.datetime.now()
         f_now_date = now_date.strftime(format_str)
         dates_positions = []
-        visit_row = []
         row = 2
 
         while True:
             compar_day = spreadsheet.cell(1, row).value
-            #シートが無い場合
             if compar_day is None:
-                print('compar_day : None Cell')
-                break #ここはリターンで返す
+                break
 
             f_format_day = datetime.datetime.strptime(compar_day, format_str).strftime(format_str)
             dates_positions.append((f_format_day, row))
-            closest_positions = sp.get_closest_positions(dates_positions, f_now_date)
-            if now_date.month == datetime.datetime.strptime(compar_day, format_str).month:
-                #次の列の値を取得して比較 None になったらbreak
-                visit_row = closest_positions
-                break
-            else:
-                visit_row = closest_positions
-                row+=42 #4枚スキップ
-        self.near_compar_date(sheetid=id, sheetname=sheetname, row_data=visit_row)
+            row += 42  # 4枚スキップ
+
+        # 今日の日付と比較して近い順に3つのデータを選択
+        closest_positions = self.get_closest_positions(dates_positions, f_now_date)
+        print(f"Closest positions: {closest_positions}")
+
+        # 選択したデータの近辺をさらに取得
+        self.near_compar_date(sheetname=sheetname, sheetid=id, row_data=closest_positions)
+
 
 
     def near_compar_date(self, sheetname, sheetid, row_data):
@@ -173,7 +149,7 @@ class SpreadsheetService:
                 dates_positions.append((f_format_day, i))
                 
                 closest_data = self.get_closest_positions(dates_positions, f_now_date)
-                print(closest_data)
+                return print(closest_data)
         except:
             return None
 
@@ -200,7 +176,7 @@ def get_search_info():
         file_info = []
         # Loop through the items and add the file name and ID to the list
         for item in items:
-            file_info.append({'name': item['name'], 'id': item['id']})
+            file_info.append({'label': item['name'], 'value': item['id']})
         return file_info
     except HttpError as error:
         message = f'エラー: {error.content.decode("utf-8")}'
@@ -210,56 +186,28 @@ def get_search_info():
 
 @app.get('/search/subjects/{sheet_id}')
 def get_subjects(sheet_id: str):
-    subject = sp.get_subject(sheet_id)
+    subject = sp.get_worksheet(sheet_id)
     return subject
 
 
-
-#検索画面後の画面の遷移
-@app.get('/search/subjects/{sheetid}')
-def user_info2(sheet_id: str):
-    #科目のIDが渡されるから修正する
-    format_str = "%m/%d %H:%M"
-    row = 2
-
-    now_date = datetime.datetime.now()
-    f_now_date = now_date.strftime(format_str)
-
-    worksheet_lists = sp.get_worksheet(sheetid=sheet_id)
-    sheet_log_dict = {}
-    #シート名を取得するfor
-    for worksheet in worksheet_lists:
-        dates_positions = []
-        #sheet_nameの中で今日から最も近い日付のセルの位置を取得するwhile
-        while True:
-            compar_day = worksheet.cell(1, row).value
-            if compar_day is None:
-                print('compar_day : None Cell')
-                break #ここはリターンで返す。（シートが無い場合)
-            f_format_day = datetime.datetime.strptime(compar_day, format_str).strftime(format_str)
-            dates_positions.append((f_format_day, row))
-            row += 7
-        closest_positions = sp.get_closest_positions(dates_positions, f_now_date)
-        log_sheet = sp.get_old_sheet(postionCell=closest_positions, sub_name=worksheet) #過去のセルの取得
-        print(f'log_sheet : {log_sheet}')
-        #sheet_log_dict[get_sheet_info.title] = log_sheet
-    #return sheet_log_dict
-
-
-
-@app.get('/search/{sheet_id}/{sbjects_id}')
-def user_info(sheet_id: str):
+@app.get('/search/{sheet_id}/{subjects_id}')
+def user_info(sheet_id: str, subjects_id: int):
     format_str = "%m/%d %H:%M"
     now_date = datetime.datetime.now()
     f_now_date = now_date.strftime(format_str)
 
-    worksheet_lists = sp.get_worksheet(sheetid=sheet_id)
-    sheet_log_dict = {}
-    for worksheet in worksheet_lists:
-        print(f'sub name : {worksheet["sub"]}')
-        dates_positions = []
-        date_info = sp.closetDataFinder(id=sheet_id, sheetname=worksheet['sub'])
-        print(f'date info : {date_info}')
+    # 指定されたシートIDに対応するシートの情報を取得
+    subjects = sp.get_worksheet(sheet_id)
+    # subjects_idを使用して、対応するシートの名前を検索
+    for subject in subjects:
+        if subject['value'] == subjects_id:
+            sheet_name = subject['label']
+            break
+    else:
+        return {"error": "Subject not found"}
+    print(f'科目名 : {sheet_name}')
+    date_info = sp.closetDataFinder(id=sheet_id, sheetname=sheet_name)
+    print(f'date info : {date_info}')
 
 
 
@@ -272,5 +220,7 @@ def export_cell_position(value):
 
 
 if __name__ == '__main__':
-    z = get_subjects(sheet_id='1CEn2feUeQMfq885PVtyX96-ImOQxeqypeyePHpnPMg4')
-    print(z)
+    #z = user_info(sheet_id='1CEn2feUeQMfq885PVtyX96-ImOQxeqypeyePHpnPMg4', subjects_id = 1059696948)
+    #z = get_subjects(sheet_id='1CEn2feUeQMfq885PVtyX96-ImOQxeqypeyePHpnPMg4')
+    #print(z)
+    pass
