@@ -22,7 +22,7 @@ app.add_middleware(
     allow_headers=["*"], # 任意のヘッダーを許可
 )
 
-api_path = r"C:\Users\sabax\Documents\Python\API_check\apitest-418907-1658bd7509d0.json"
+api_path = r"C:\Users\sabax\Documents\backend\apitest-418907-1658bd7509d0.json"
 folder_id = '163LOPPPAgKUZXpegrYbBbZkGntFnH5-v'
 
 #google driveに設定
@@ -116,12 +116,9 @@ class SpreadsheetService:
             f_format_day = datetime.datetime.strptime(compar_day, format_str).strftime(format_str)
             dates_positions.append({'value':f_format_day, 'position':row})
             row += 42  # 4枚スキップ
-        print(f'dates_positions : {dates_positions}')
 
         # 選択したデータの近辺をさらに取得
         return self.near_compar_date(sheetname=sheetname, row_data=dates_positions)
-
-
 
     def near_compar_date(self, sheetname, row_data):
         """
@@ -138,7 +135,7 @@ class SpreadsheetService:
         f_now_date = now_date.strftime(format_str)
         try:
             max_position = max(item['position'] for item in row_data)    # dates_positionsの最大値を取得する
-            
+
             for i in range(0, 35, 7):
                 now_position = max_position + i
                 compar_day = spreadsheet.cell(1, now_position).value
@@ -147,22 +144,18 @@ class SpreadsheetService:
 
                 f_format_day = datetime.datetime.strptime(compar_day, format_str).strftime(format_str)
                 dates_positions.append({'valueDate':f_format_day, 'row':now_position})
-
+    
             if len(dates_positions) < 3:
                 for i in range(-7, -21, -7):
                     now_position = max_position + i
                     compar_day = spreadsheet.cell(1, now_position).value
-                    if len(dates_positions) ==3:
-                        break
                     
                     f_format_day = datetime.datetime.strptime(compar_day, format_str).strftime(format_str)
                     dates_positions.append({'valueDate':f_format_day, 'row':now_position})
                     if len(dates_positions) ==3:
                         break
-                #return print(f"dates_positions : {dates_positions}")
-                return dates_positions
-            else:
-                return dates_positions
+
+            return dates_positions
         except:
             return print('except : None')
 
@@ -170,13 +163,14 @@ class SpreadsheetService:
         sheet_url = f'https://docs.google.com/spreadsheets/d/{self.fileID}/edit?usp=sharing'
         spreadsheet = self.gc.open_by_url(sheet_url)
         spreadsheet = spreadsheet.worksheet(sub_name)
-        for i in range(len(postionCell)):
-            start_row = export_cell_position(value=postionCell[i]-1)
-            end_row =  export_cell_position(value=postionCell[i]+4)
-            print(f'startrow : {start_row}')
-            print(f'end : {end_row}')
-            base_data = spreadsheet.batch_get(f'{start_row}1:{end_row}37')
-            return base_data
+
+        start_row = export_cell_position(value=postionCell-1)
+        end_row = export_cell_position(value=postionCell+4)
+
+        # 範囲指定の形式を修正
+        range_string = f'{start_row}1:{end_row}37'
+        base_data = spreadsheet.batch_get([range_string])  # batch_getはリスト形式の引数を取る
+        return base_data
 
 
 
@@ -223,13 +217,10 @@ def user_info(sheet_id: str, subjects_id: int):
     sorted_date_info = sorted(date_info, key=lambda x: x['row'], reverse=True)
     print(f'sorted date info : {sorted_date_info}')
 
-    # ソートされたdate_infoを使用して、必要な処理を行う
-    # 例えば、get_old_sheetメソッドを呼び出す
-    """
     positions = [item['row'] for item in sorted_date_info]
-    old_sheet = sp.get_old_sheet(postionCell=positions, sub_name=sheet_name, sheetid=sheet_id)
-    print(old_sheet)
-    """
+    old_sheet = sp.get_old_sheet(postionCell=positions[0], sub_name=sheet_name)
+    print(f"old_sheet : {old_sheet}")
+
 
 def export_cell_position(value):
     # 列のインデックスをA1表記に変換
