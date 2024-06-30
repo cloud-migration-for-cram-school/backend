@@ -1,0 +1,160 @@
+{
+  "basicInfo": {
+    "dateAndTime": [0, 1],
+    "subjectName": [0, 3],
+    "teacherName": [0, 5],
+    "progressInSchool": [1, 1],
+    "homeworkProgress": [1, 3],
+    "homeworkAccuracy": [1, 5]
+  },
+  "communication": {
+    "forNextTeacher": [2, 1],
+    "fromDirector": [4, 1]
+  },
+  "testReview": {
+    "testAccuracy": [7, 0],
+    "classOverallStatus": [6, 2],
+    "rationale": [8, 2]
+  },
+  "lessonDetails": [
+    {
+      "material": [10, 0],
+      "chapter": [10, 1],
+      "accuracy": [10, 2]
+    },
+    {
+      "material": [11, 0],
+      "chapter": [11, 1],
+      "accuracy": [11, 2]
+    },
+    {
+      "material": [12, 0],
+      "chapter": [12, 1],
+      "accuracy": [12, 2]
+    },
+    {
+      "material": [10, 3],
+      "chapter": [10, 4],
+      "accuracy": [10, 5]
+    },
+    {
+      "material": [11, 3],
+      "chapter": [11, 4],
+      "accuracy": [11, 5]
+    },
+    {
+      "material": [12, 3],
+      "chapter": [12, 4],
+      "accuracy": [12, 5]
+    },
+    {
+      "strengthsAndAreasForImprovement": [13, 1]
+    }
+  ],
+  "homework": {
+    "assignments": [
+      {
+        "day": [17, 1],
+        "tasks": [
+          {
+            "material": [17, 2],
+            "rangeAndPages": [17,3]
+          },
+          {
+            "material": [17, 4],
+            "rangeAndPages": [17, 5]
+          }
+        ]
+      },
+      {
+        "day": [18, 1],
+        "tasks": [
+          {
+            "material": [18, 2],
+            "rangeAndPages": [18, 3]
+          },
+          {
+            "material": [18, 4],
+            "rangeAndPages": [18, 5]
+          }
+        ]
+      },
+      {
+        "day": [19, 1],
+        "tasks": [
+          {
+            "material": [19, 2],
+            "rangeAndPages": [19, 3]
+          },
+          {
+            "material": [19, 4],
+            "rangeAndPages": [19, 5]
+          }
+        ]
+      },
+      {
+        "day": [20, 1],
+        "tasks": [
+          {
+            "material": [20, 2],
+            "rangeAndPages": [20, 3]
+          },
+          {
+            "material": [20, 4],
+            "rangeAndPages": [20, 5]
+          }
+        ]
+      },
+      {
+        "day": [21, 1],
+        "tasks": [
+          {
+            "material": [21, 2],
+            "rangeAndPages": [21, 3]
+          },
+          {
+            "material": [21, 4],
+            "rangeAndPages": [21, 5]
+          }
+        ]
+      },
+      {
+        "day": [22, 1],
+        "tasks": [
+          {
+            "material": [22, 2],
+            "rangeAndPages": [22, 3]
+          },
+          {
+            "material": [22, 4],
+            "rangeAndPages": [22, 5]
+          }
+        ]
+      }
+    ],
+    "advice": [23, 3],
+    "noteForNextSession": [24, 3]
+  },
+  "nextTest": [
+    {
+      "material": [26, 1],
+      "chapter": [26, 2],
+      "rangeAndPages": [26, 3]
+    },
+    {
+      "material": [28, 1],
+      "chapter": [28, 2],
+      "rangeAndPages": [28, 3]
+    },
+    {
+      "material": [30, 1],
+      "chapter": [30, 2],
+      "rangeAndPages": [30, 3]
+    }
+  ],
+  "studentStatus": [31, 2],
+  "lessonPlan": {
+    "ifTestOK": [33, 2],
+    "ifTestNG": [35, 2]
+  }
+}

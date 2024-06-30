@@ -6,8 +6,9 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import datetime
 import heapq
-import json
 from openpyxl.utils import get_column_letter
+import json
+import transform_data
 
 
 #fastapiの有効化
@@ -215,18 +216,18 @@ def user_info(sheet_id: str, subjects_id: int):
 
     # date_infoを大きい順に並び替える
     sorted_date_info = sorted(date_info, key=lambda x: x['row'], reverse=True)
-    print(f'sorted date info : {sorted_date_info}')
 
     positions = [item['row'] for item in sorted_date_info]
     old_sheet = sp.get_old_sheet(postionCell=positions[0], sub_name=sheet_name)
-    print(f"old_sheet : {old_sheet}")
+    mapping = transform_data.load_json('mapping.json')
 
+    transformed_data = transform_data.transform_data(old_sheet[0], mapping)
+    return json.dumps(transformed_data, ensure_ascii=False, indent=2)
 
 def export_cell_position(value):
     # 列のインデックスをA1表記に変換
     column_letter = get_column_letter(value)
     return column_letter
-
 
 
 
