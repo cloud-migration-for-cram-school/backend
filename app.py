@@ -4,7 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 import json
 import transform_data
 from SpreadSheetService import SpreadsheetService
-
+import time
 
 #fastapiの有効化
 app = FastAPI(debug=True)
@@ -55,7 +55,6 @@ def user_info(sheet_id: str, subjects_id: int):
         return {"error": "Subject not found"}
     print(f'科目名 : {sheet_name}')
     date_info = sp.closetDataFinder(sheetname=sheet_name)
-
     # date_infoを大きい順に並び替える
     sorted_date_info = sorted(date_info, key=lambda x: x['row'], reverse=True)
 
@@ -71,8 +70,14 @@ def user_info(sheet_id: str, subjects_id: int):
 
 
 if __name__ == '__main__':
+    start_time = time.time()  # API呼び出し前の時刻を記録
     #print(get_search_info())
     #x = get_subjects(sheet_id='1CEn2feUeQMfq885PVtyX96-ImOQxeqypeyePHpnPMg4')
     #print(x)
     z = user_info(sheet_id='1CEn2feUeQMfq885PVtyX96-ImOQxeqypeyePHpnPMg4', subjects_id = 1059696948)
     print(z)
+
+    end_time = time.time()  # API呼び出し後の時刻を記録
+    elapsed_time = end_time - start_time  # 応答時間を計算
+    print(f"API応答時間: {elapsed_time}秒")
+    # 変更前 5秒 変更後 4.3秒
