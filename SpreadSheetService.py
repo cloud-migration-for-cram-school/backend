@@ -139,3 +139,32 @@ class SpreadsheetService:
         range_string = f'{start_row}1:{end_row}37'
         base_data = spreadsheet.batch_get([range_string])  # batch_getはリスト形式の引数を取る
         return base_data
+
+    def exp_DataFinder(self, sheetname, expotent_base, start_row):
+        """
+        指数探索版のclosetDataFinderを使って日付を取得
+        2回指数探索を用いて端までデータを取得し、線形探索(near_compar_date)を用いてデータを確定する
+        引数はシート名と指数の基数
+        return はvalue : 日付, row : 位置 にする予定
+        """
+        self.sheet = self.spreadsheet.worksheet(sheetname)
+
+        format_str = "%m/%d %H:%M"
+        dates_positions = []
+        iteration_count = 0  # イテレーションのカウントを追跡
+
+        while True:
+            if iteration_count == 0:
+                row = 2  # 最初のイテレーションではrowを2に設定
+            else:
+                row = (expotent_base ** iteration_count) + 2 if iteration_count == 1 else (expotent_base ** iteration_count)
+
+            compar_day = self.sheet.cell(1, row).value
+            if compar_day is None:
+                break
+
+            f_format_day = datetime.datetime.strptime(compar_day, format_str).strftime(format_str)
+            dates_positions.append({'value':f_format_day, 'position':row})
+            iteration_count += 1  # イテレーションカウントをインクリメント
+
+        return dates_positions

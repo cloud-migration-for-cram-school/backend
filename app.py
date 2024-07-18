@@ -66,7 +66,31 @@ def user_info(sheet_id: str, subjects_id: int):
     return json.dumps(transformed_data, ensure_ascii=False, indent=2)
 
 
+@app.get('/search/subjects/reports/{subjects_id}}')
+def user_info_exp(sheet_id: str, subjects_id: int):
+    sp = SpreadsheetService(fileID=sheet_id)
+    # 指定されたシートIDに対応するシートの情報を取得
+    subjects = sp.get_worksheet()
+    # subjects_idを使用して、対応するシートの名前を検索
+    for subject in subjects:
+        if subject['value'] == subjects_id:
+            sheet_name = subject['label']
+            break
+    else:
+        return {"error": "Subject not found"}
+    print(f'科目名 : {sheet_name}')
+    date_info = sp.exp_DataFinder(sheetname = sheet_name, expotent_base = 7, start_row=2)
+    print(date_info)
+    """
+    # date_infoを大きい順に並び替える
+    sorted_date_info = sorted(date_info, key=lambda x: x['row'], reverse=True)
+    positions = [item['row'] for item in sorted_date_info]
+    old_sheet = sp.get_old_sheet(postionCell=positions[0], sub_name=sheet_name)
+    mapping = transform_data.load_json('mapping.json')
 
+    transformed_data = transform_data.transform_data(old_sheet[0], mapping)
+    return json.dumps(transformed_data, ensure_ascii=False, indent=2)
+    """
 
 
 if __name__ == '__main__':
@@ -74,7 +98,7 @@ if __name__ == '__main__':
     #print(get_search_info())
     #x = get_subjects(sheet_id='1CEn2feUeQMfq885PVtyX96-ImOQxeqypeyePHpnPMg4')
     #print(x)
-    z = user_info(sheet_id='1CEn2feUeQMfq885PVtyX96-ImOQxeqypeyePHpnPMg4', subjects_id = 1059696948)
+    z = user_info_exp(sheet_id='1CEn2feUeQMfq885PVtyX96-ImOQxeqypeyePHpnPMg4', subjects_id = 1059696948)
     print(z)
 
     end_time = time.time()  # API呼び出し後の時刻を記録
