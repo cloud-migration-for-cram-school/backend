@@ -2,9 +2,11 @@ from googleapiclient.errors import HttpError
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import json
-import transform_data
-from SpreadSheetService import SpreadsheetService
+import service.transform_data
+from service.spreadsheet_service import SpreadsheetService
 import time
+
+mapping_file = r'C:\Users\sabax\Repositories\backend\service\mapping.json'
 
 #fastapiの有効化
 app = FastAPI(debug=True)
@@ -54,15 +56,15 @@ def user_info(sheet_id: str, subjects_id: int):
     else:
         return {"error": "Subject not found"}
     print(f'科目名 : {sheet_name}')
-    date_info = sp.closetDataFinder(sheetname=sheet_name)
+    date_info = sp.closetDataFinder(sheetname=sheet_name, start_row=2)
     # date_infoを大きい順に並び替える
     sorted_date_info = sorted(date_info, key=lambda x: x['row'], reverse=True)
 
     positions = [item['row'] for item in sorted_date_info]
     old_sheet = sp.get_old_sheet(postionCell=positions[0], sub_name=sheet_name)
-    mapping = transform_data.load_json('mapping.json')
+    mapping = service.transform_data.load_json(mapping_file)
 
-    transformed_data = transform_data.transform_data(old_sheet[0], mapping)
+    transformed_data = service.transform_data.transform_data(old_sheet[0], mapping)
     return json.dumps(transformed_data, ensure_ascii=False, indent=2)
 
 
@@ -79,18 +81,22 @@ def user_info_exp(sheet_id: str, subjects_id: int):
     else:
         return {"error": "Subject not found"}
     print(f'科目名 : {sheet_name}')
+    # epotent_baseは7で固定する
+    # start_rowは2で固定する
     date_info = sp.exp_DataFinder(sheetname = sheet_name, expotent_base = 7, start_row=2)
-    print(date_info)
-    """
+    # 前回の指数探索で取得したデータからスタートをする
+    meticulous_date_info = sp.exp_DataFinder(sheetname = sheet_name, expotent_base = 7, start_row=date_info[len(date_info) - 1]['position'])
+    liner_search = sp.closetDataFinder(sheetname = sheet_name, start_row=meticulous_date_info[len(meticulous_date_info) - 1]['position'])
+
     # date_infoを大きい順に並び替える
-    sorted_date_info = sorted(date_info, key=lambda x: x['row'], reverse=True)
+    sorted_date_info = sorted(liner_search, key=lambda x: x['row'], reverse=True)
     positions = [item['row'] for item in sorted_date_info]
     old_sheet = sp.get_old_sheet(postionCell=positions[0], sub_name=sheet_name)
-    mapping = transform_data.load_json('mapping.json')
+    mapping = service.transform_data.load_json(mapping_file)
 
-    transformed_data = transform_data.transform_data(old_sheet[0], mapping)
+    transformed_data = service.transform_data.transform_data(old_sheet[0], mapping)
     return json.dumps(transformed_data, ensure_ascii=False, indent=2)
-    """
+
 
 
 if __name__ == '__main__':

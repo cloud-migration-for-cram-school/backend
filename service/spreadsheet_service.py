@@ -4,10 +4,14 @@ import gspread
 import datetime
 import heapq
 from openpyxl.utils import get_column_letter
+from dotenv import load_dotenv
+import os
 
+# .envファイルから環境変数を読み込む
+load_dotenv()
 
-api_path = r"C:\Users\sabax\Documents\Python\API_check\apitest-418907-1658bd7509d0.json"
-folder_id = '163LOPPPAgKUZXpegrYbBbZkGntFnH5-v'
+api_path = os.getenv('API_PATH')
+folder_id = os.getenv('FOLDER_ID')
 
 #google driveに設定
 scopes = ['https://www.googleapis.com/auth/drive']
@@ -16,8 +20,9 @@ credentials = Credentials.from_service_account_file(
     api_path,
     scopes = scopes
 )
+# シートの設定 ... 日付の間隔は7の倍数で入っている
 get_sample = 1 # 取得するデータの数
-skip_sheet_data = 42 # スキップするシートの数 4枚スキップする
+skip_sheet_data = 42 # スキップするシートの数 42/7 =  4枚スキップする
 next_data = 35 # 次のデータを取得する数 5枚取得する
 past_data = -21 # 過去のデータを取得する数 3枚取得する
 
@@ -50,7 +55,6 @@ class SpreadsheetService:
         except Exception as e:
             print(e)
 
-
     def get_worksheet(self):
         """
         sheetidのシート名とIDを辞書として返す
@@ -58,7 +62,6 @@ class SpreadsheetService:
         spreadsheet = self.gc.open_by_url(self.sheet_url)
         worksheets = spreadsheet.worksheets()
         return [{'label': ws.title, 'value': ws.id} for ws in worksheets]
-
 
     def get_closest_positions(self, dates_positions, target_date):
         """
@@ -70,8 +73,7 @@ class SpreadsheetService:
         closest_indices = heapq.nsmallest(get_sample, range(len(differences)), key=differences.__getitem__)
         return [(dates_positions[i][1]) for i in closest_indices]
 
-
-    def closetDataFinder(self, sheetname):
+    def closetDataFinder(self, sheetname, start_row):
         """
         取得した日付と近い順に３つ値と位置を取得する
         returnはint 位置のみ
@@ -80,20 +82,20 @@ class SpreadsheetService:
 
         format_str = "%m/%d %H:%M"
         dates_positions = []
-        row = 2
-
+        
         while True:
-            compar_day = self.sheet.cell(1, row).value
-            if compar_day is None:
+            try:
+                compar_day = self.sheet.cell(1, start_row).value
+                if compar_day is None:
+                    break
+
+                f_format_day = datetime.datetime.strptime(compar_day, format_str).strftime(format_str)
+                dates_positions.append({'value':f_format_day, 'position':start_row})
+                start_row += skip_sheet_data
+            except:
                 break
-
-            f_format_day = datetime.datetime.strptime(compar_day, format_str).strftime(format_str)
-            dates_positions.append({'value':f_format_day, 'position':row})
-            row += skip_sheet_data
-
         # 選択したデータの近辺をさらに取得
         return self.near_compar_date(row_data=dates_positions)
-
 
     def near_compar_date(self, row_data):
         """
@@ -126,8 +128,9 @@ class SpreadsheetService:
                         break
 
             return dates_positions
-        except:
-            return print('except : None')
+        except Exception as e:
+            print(f'except : {e}')
+            return dates_positions
 
     def get_old_sheet(self, postionCell, sub_name):
         spreadsheet = self.gc.open_by_url(self.sheet_url)
@@ -154,17 +157,42 @@ class SpreadsheetService:
         iteration_count = 0  # イテレーションのカウントを追跡
 
         while True:
-            if iteration_count == 0:
-                row = 2  # 最初のイテレーションではrowを2に設定
+            if iteration_count == 0 :
+                row = 0
             else:
-                row = (expotent_base ** iteration_count) + 2 if iteration_count == 1 else (expotent_base ** iteration_count)
+                row = expotent_base ** iteration_count
+            
+            try:
+                compar_day = self.sheet.cell(1, row + start_row).value
+                if compar_day is None:
+                    break
 
-            compar_day = self.sheet.cell(1, row).value
-            if compar_day is None:
+                f_format_day = datetime.datetime.strptime(compar_day, format_str).strftime(format_str)
+                dates_positions.append({'value':f_format_day, 'position':row+start_row})
+                iteration_count += 1
+            except:
+                print("except")
                 break
-
-            f_format_day = datetime.datetime.strptime(compar_day, format_str).strftime(format_str)
-            dates_positions.append({'value':f_format_day, 'position':row})
-            iteration_count += 1  # イテレーションカウントをインクリメント
-
         return dates_positions
+    
+    def autofill_date(self):
+        """
+        疑似データ作成
+        """
+        sheetname = '数学'
+        sheet = self.spreadsheet.worksheet(sheetname)
+        class_value = ["9:30", "11:00", "12:30", "14:00", "15:30", "17:00", "18:30", "20:00"]
+        constant = 0
+        date = datetime.date.today()  # 今日の日付を取得
+
+        while True:
+            for time in class_value:
+                cell_row = 1  # 代入する行
+                cell_col = 72 + constant  # 代入する列
+                date_str = date.strftime('%m/%d').lstrip("0").replace("/0", "/")  # 日付を指定されたフォーマットに変換
+                sheet.update_cell(cell_row, cell_col, f"{date_str} {time}")  # セルに日付と時間を代入
+                print(cell_row, cell_col, f"{date_str} {time}")
+                constant += 7
+            date += datetime.timedelta(days=1)  # 日付を翌日に更新
+            if constant == 49:
+                break
