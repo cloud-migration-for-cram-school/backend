@@ -2,11 +2,16 @@ from googleapiclient.errors import HttpError
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import json
+import os
+from dotenv import load_dotenv
 import service.transform_data
 from service.spreadsheet_service import SpreadsheetService
 import time
 
-mapping_file = r'C:\Users\sabax\Repositories\backend\service\mapping.json'
+# .envファイルから環境変数を読み込む
+load_dotenv()
+
+mapping_file = os.getenv('MAPPING_FILE')
 
 #fastapiの有効化
 app = FastAPI(debug=True)
