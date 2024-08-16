@@ -175,6 +175,17 @@ class SpreadsheetService:
                 break
         return dates_positions
     
+    def update_report(self, start_position, data, sheet_name):
+        try:
+            sheet = self.spreadsheet.worksheet(sheet_name)
+            for row_offset, row_data in enumerate(data):
+                for col_offset, value in enumerate(row_data):
+                    cell = sheet.cell(row_offset + 1, start_position + col_offset)
+                    sheet.update_cell(cell.row, cell.col, value)
+        except Exception as e:
+            print(f"Failed to update report: {e}")
+            raise
+    
     def autofill_date(self):
         """
         疑似データ作成
