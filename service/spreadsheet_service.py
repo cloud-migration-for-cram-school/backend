@@ -178,10 +178,14 @@ class SpreadsheetService:
     def update_report(self, start_position, data, sheet_name):
         try:
             sheet = self.spreadsheet.worksheet(sheet_name)
-            for row_offset, row_data in enumerate(data):
-                for col_offset, value in enumerate(row_data):
-                    cell = sheet.cell(row_offset + 1, start_position + col_offset)
-                    sheet.update_cell(cell.row, cell.col, value)
+            range_string = f"{get_column_letter(start_position)}1:{get_column_letter(start_position + len(data[0]) - 1)}{len(data)}"
+
+            value_range = {
+                "range": range_string,
+                "values": data
+            }
+
+            sheet.batch_update([value_range])
         except Exception as e:
             print(f"Failed to update report: {e}")
             raise
