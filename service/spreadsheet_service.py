@@ -175,6 +175,21 @@ class SpreadsheetService:
                 break
         return dates_positions
     
+    def update_report(self, start_position, data, sheet_name):
+        try:
+            sheet = self.spreadsheet.worksheet(sheet_name)
+            range_string = f"{get_column_letter(start_position)}1:{get_column_letter(start_position + len(data[0]) - 1)}{len(data)}"
+
+            value_range = {
+                "range": range_string,
+                "values": data
+            }
+
+            sheet.batch_update([value_range])
+        except Exception as e:
+            print(f"Failed to update report: {e}")
+            raise
+    
     def autofill_date(self):
         """
         疑似データ作成
