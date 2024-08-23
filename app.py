@@ -62,18 +62,18 @@ def user_info(sheet_id: str, subjects_id: int):
     else:
         return {"error": "Subject not found"}
     print(f'科目名 : {sheet_name}')
-    date_info = sp.closetDataFinder(sheetname=sheet_name, start_row=2)
+    date_info = sp.closetDataFinder(worksheetname=sheet_name, start_row=2)
     # date_infoを大きい順に並び替える
     sorted_date_info = sorted(date_info, key=lambda x: x['row'], reverse=True)
 
     positions = [item['row'] for item in sorted_date_info]
-    old_sheet = sp.get_old_sheet(postionCell=positions[0], sub_name=sheet_name)
+    old_sheet = sp.get_old_sheet(postionCell=positions[0], worksheetname=sheet_name)
     mapping = service.transform_data.load_json(mapping_file)
 
     transformed_data = service.transform_data.transform_data(old_sheet[0], mapping)
     return json.dumps(transformed_data, ensure_ascii=False, indent=2)
 
-@app.get('/search/subjects/reports/{subjects_id}}')
+@app.get('/search/subjects/reports/{subjects_id}')
 def user_info_exp(sheet_id: str, subjects_id: int):
     sp = SpreadsheetService(fileID=sheet_id)
     # 指定されたシートIDに対応するシートの情報を取得
@@ -91,19 +91,19 @@ def user_info_exp(sheet_id: str, subjects_id: int):
     date_info = sp.exp_DataFinder(sheetname = sheet_name, expotent_base = 7, start_row=2)
     # 前回の指数探索で取得したデータからスタートをする
     meticulous_date_info = sp.exp_DataFinder(sheetname = sheet_name, expotent_base = 7, start_row=date_info[len(date_info) - 1]['position'])
-    liner_search = sp.closetDataFinder(sheetname = sheet_name, start_row=meticulous_date_info[len(meticulous_date_info) - 1]['position'])
+    liner_search = sp.closetDataFinder(worksheetname = sheet_name, start_row=meticulous_date_info[len(meticulous_date_info) - 1]['position'])
 
     # date_infoを大きい順に並び替える
     sorted_date_info = sorted(liner_search, key=lambda x: x['row'], reverse=True)
     positions = [item['row'] for item in sorted_date_info]
-    old_sheet = sp.get_old_sheet(postionCell=positions[0], sub_name=sheet_name)
+    old_sheet = sp.get_old_sheet(postionCell=positions[0], worksheetname=sheet_name)
     mapping = service.transform_data.load_json(mapping_file)
 
     transformed_data = service.transform_data.transform_data(old_sheet[0], mapping)
     return json.dumps(transformed_data, ensure_ascii=False, indent=2)
 
-@app.post('/submit/report/{sheet_id}')
-def submit_report(sheet_id: str, request: Request):
+@app.post('/submit/report/{sheet_id}/{subjects_id}')
+def submit_report(sheet_id: str, subjects_id: int, request: Request):
     try:
         # JSON データを取得
         report_data = request.json()
@@ -111,10 +111,19 @@ def submit_report(sheet_id: str, request: Request):
         # SpreadsheetService のインスタンスを作成
         sp = SpreadsheetService(fileID=sheet_id)
 
+        subjects = sp.get_worksheet()
+        # subjects_idを使用して、対応するシートの名前を検索
+        for subject in subjects:
+            if subject['value'] == subjects_id:
+                sheet_name = subject['label']
+                break
+        else:
+            return {"error": "Subject not found"}
+
         # シート内で入力する位置を探索
-        date_info = sp.exp_DataFinder(sheetname=report_data['sheet_name'], expotent_base=7, start_row=2)
-        meticulous_date_info = sp.exp_DataFinder(sheetname=report_data['sheet_name'], expotent_base=7, start_row=date_info[-1]['position'])
-        liner_search = sp.closetDataFinder(sheetname=report_data['sheet_name'], start_row=meticulous_date_info[-1]['position'])
+        date_info = sp.exp_DataFinder(sheetname=sheet_name, expotent_base=7, start_row=2)
+        meticulous_date_info = sp.exp_DataFinder(sheetname=sheet_name, expotent_base=7, start_row=date_info[-1]['position'])
+        liner_search = sp.closetDataFinder(worksheetname=sheet_name, start_row=meticulous_date_info[-1]['position'])
 
         # 最も左側の空セルの位置を決定
         target_position = liner_search[-1]['row'] + 7
@@ -124,7 +133,7 @@ def submit_report(sheet_id: str, request: Request):
         transformed_data = service.transform_data.reverse_transform_data(report_data, mapping)
 
         # データをスプレッドシートに登録
-        sp.update_report(target_position, transformed_data, sheet_name=report_data['sheet_name'])
+        sp.update_report(target_position, transformed_data, sheet_name=sheet_name)
 
         return {"status": "success", "message": "Report submitted successfully."}
     
