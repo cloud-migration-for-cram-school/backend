@@ -6,7 +6,7 @@ def load_json(file_path):
         return json.load(file)
 
 def transform_data(input_data, mapping):
-    """入力データをマッピングに基づいて変換する"""
+    """入力データをマッピングに基づいて変換し、全てを文字列として処理する"""
     transformed_data = {}
     for key, value in mapping.items():
         if isinstance(value, list):
@@ -18,7 +18,7 @@ def transform_data(input_data, mapping):
                     row, col = value
                     # input_dataのサイズをチェック
                     if row < len(input_data) and col < len(input_data[row]):
-                        transformed_data[key] = input_data[row][col]
+                        transformed_data[key] = str(input_data[row][col])
                     else:
                         # 範囲外の場合、デフォルト値を設定
                         transformed_data[key] = None
@@ -67,18 +67,3 @@ def reverse_transform_data(input_data, mapping):
                     row, col = sub_value
                     reversed_data[row][col] = input_data[key][sub_key]
     return reversed_data
-
-def main():
-    # マッピングと入力データを読み込む
-    mapping = load_json('mapping.json')
-    input_data = load_json('input_data.json')  # 仮の入力データファイル名
-
-    # データ変換
-    transformed_data = transform_data(input_data, mapping)
-
-    # 変換結果をファイルに出力
-    with open('transformed_data.json', 'w', encoding='utf-8') as file:
-        json.dump(transformed_data, file, ensure_ascii=False, indent=4)
-
-if __name__ == '__main__':
-    main()

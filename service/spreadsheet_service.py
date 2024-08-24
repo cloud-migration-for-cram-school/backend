@@ -26,6 +26,29 @@ skip_sheet_data = 42 # スキップするシートの数 42/7 =  4枚スキッ�
 next_data = 35 # 次のデータを取得する数 5枚取得する
 past_data = -21 # 過去のデータを取得する数 3枚取得する
 
+class DriveService:
+    def __init__(self):
+        credentials = Credentials.from_service_account_file(
+            api_path,
+            scopes = scopes
+        )
+        self.drive_service = build('drive', 'v3', credentials=credentials)
+        # Google Sheets APIに接続
+        self.sheets_service = build('sheets', 'v4', credentials=credentials)
+        self.query = f"'{folder_id}' in parents"
+    
+    def get_info(self):
+        """
+        スプレッドシートのファイル名とIDを取得
+        """
+        try:
+            results = self.drive_service.files().list(q=self.query, fields='files(name, id)').execute()
+            items = results.get('files', [])
+            return items
+        except Exception as e:
+            print(e)
+
+
 class SpreadsheetService:
     def __init__(self, fileID=None):
         credentials = Credentials.from_service_account_file(
@@ -37,23 +60,6 @@ class SpreadsheetService:
         self.sheet_url = f'https://docs.google.com/spreadsheets/d/{self.fileID}/edit?usp=sharing'
         self.gc = gspread.authorize(credentials)
         self.spreadsheet = self.gc.open_by_url(self.sheet_url)
-
-        #Google Drive APIに接続
-        self.drive_service = build('drive', 'v3', credentials=credentials)
-        # Google Sheets APIに接続
-        self.sheets_service = build('sheets', 'v4', credentials=credentials)
-        self.query = f"'{folder_id}' in parents"
-
-    def get_info(self):
-        """
-        スプレッドシートのファイル名とIDを取得
-        """
-        try:
-            results = self.drive_service.files().list(q=self.query, fields='files(name, id)').execute()
-            items = results.get('files', [])
-            return items
-        except Exception as e:
-            print(e)
 
     def get_worksheet(self):
         """
@@ -129,7 +135,7 @@ class SpreadsheetService:
 
             return dates_positions
         except Exception as e:
-            print(f'except : {e}')
+            print(f'except nearcompar date : {e}')
             return dates_positions
 
     def get_old_sheet(self, postionCell, sub_name):
@@ -171,7 +177,7 @@ class SpreadsheetService:
                 dates_positions.append({'value':f_format_day, 'position':row+start_row})
                 iteration_count += 1
             except:
-                print("except")
+                print("except:datafinder")
                 break
         return dates_positions
     
