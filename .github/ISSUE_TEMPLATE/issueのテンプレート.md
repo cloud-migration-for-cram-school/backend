@@ -15,9 +15,9 @@ assignees: ''
 
 ## タスク
 細分化されたタスクを記述.
-- [] XXXX
-- [] XXXX
-- [] XXXX
+- XXXX
+- XXXX
+- XXXX
 
 ## その他
 Slackのリンクなどの参考や補足を記述.
