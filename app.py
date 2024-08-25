@@ -7,7 +7,6 @@ from dotenv import load_dotenv
 import service.transform_data
 from service.spreadsheet_service import SpreadsheetService, DriveService
 from fastapi import Request
-from fastapi.exceptions import HTTPException
 
 
 
@@ -105,42 +104,29 @@ def user_info_exp(sheet_id: str, subjects_id: str):
 @app.post('/submit/report/{sheet_id}/{subjects_id}')
 async def submit_report(sheet_id: str, subjects_id: str, request: Request):
     try:
-        print("1")
         # JSON データを取得
         report_data = await request.json()  # awaitを使って結果を待つ
-        print("2")
         # SpreadsheetService のインスタンスを作成
         sp = SpreadsheetService(fileID=sheet_id)
-        print("3")
         subjects = sp.get_worksheet()
-        print("4")
         # subjects_idを使用して、対応するシートの名前を検索
         for subject in subjects:
             if subject['value'] == int(subjects_id):
-                print("5")
                 sheet_name = subject['label']
                 break
         else:
             return {"error": "Subject not found"}
-        print("6")
         # シート内で入力する位置を探索
         date_info = sp.exp_DataFinder(sheetname=sheet_name, expotent_base=7, start_row=2)
-        print("7")
         meticulous_date_info = sp.exp_DataFinder(sheetname=sheet_name, expotent_base=7, start_row=date_info[-1]['position'])
-        print("8")
         liner_search = sp.closetDataFinder(sheetname=sheet_name, start_row=meticulous_date_info[-1]['position'])
-        print("9")
         # 最も左側の空セルの位置を決定
         target_position = liner_search[-1]['row'] + 6
-        print("10")
         # JSONデータをスプレッドシート形式に変換
         mapping = service.transform_data.load_json(mapping_file)
-        print("11")
         transformed_data = service.transform_data.reverse_transform_data(report_data, mapping)
-        print("12")
         # データをスプレッドシートに登録
         sp.update_report(target_position, transformed_data, sheet_name=sheet_name)
-        print("13")
         return {"status": "success", "message": "Report submitted successfully."}
     except Exception as e:
         print(f"エラーが発生しました: {e}")
