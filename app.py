@@ -14,6 +14,7 @@ from fastapi import Request
 load_dotenv()
 
 mapping_file = os.getenv('MAPPING_FILE')
+mapping = service.transform_data.load_json(mapping_file)
 
 #fastapiの有効化
 app = FastAPI()
@@ -85,17 +86,23 @@ def user_info_exp(sheet_id: str, subjects_id: str):
                 break
 
         if sheet_name is None:
-            return {"error": "Subject not found こんにちは!こちらはbackendです!"}
-
+            return {"error": "Subject not found "}
+        # シート内で取得する位置を探索
         date_info = sp.exp_DataFinder(sheetname=sheet_name, expotent_base=7, start_row=2)
-        meticulous_date_info = sp.exp_DataFinder(sheetname=sheet_name, expotent_base=7, start_row=date_info[-1]['position'])
-        liner_search = sp.closetDataFinder(sheetname=sheet_name, start_row=meticulous_date_info[-1]['position'])
-        sorted_date_info = sorted(liner_search, key=lambda x: x['row'], reverse=True)
-        positions = [item['row'] for item in sorted_date_info]
-        old_sheet = sp.get_old_sheet(postionCell=positions[0], sub_name=sheet_name)
-        mapping = service.transform_data.load_json(mapping_file)
-        transformed_data = service.transform_data.transform_data(old_sheet[0], mapping)
-        return transformed_data  # JSON形式としてそのまま返す
+        if date_info[0]['position'] != 0:
+            # 過去の報告書が存在する場合の処理
+            meticulous_date_info = sp.exp_DataFinder(sheetname=sheet_name, expotent_base=7, start_row=date_info[-1]['position'])
+            liner_search = sp.closetDataFinder(sheetname=sheet_name, start_row=meticulous_date_info[-1]['position'])
+
+            sorted_date_info = sorted(liner_search, key=lambda x: x['row'], reverse=True)
+            positions = [item['row'] for item in sorted_date_info]
+
+            # データ取得とデータの整形
+            old_sheet = sp.get_old_sheet(postionCell=positions[0], sub_name=sheet_name)
+            transformed_data = service.transform_data.transform_data(old_sheet[0], mapping)
+            return transformed_data  # JSON形式としてそのまま返す
+        else: # 過去の報告書が存在しない場合
+            return service.transform_data.initialize_mapping_with_defaults(mapping)
     except Exception as e:
         print(f"エラーが発生しました: {e}")
         return {"error": f"エラーが発生しました: {str(e)}"}
@@ -116,12 +123,21 @@ async def submit_report(sheet_id: str, subjects_id: str, request: Request):
                 break
         else:
             return {"error": "Subject not found"}
+        
         # シート内で入力する位置を探索
         date_info = sp.exp_DataFinder(sheetname=sheet_name, expotent_base=7, start_row=2)
-        meticulous_date_info = sp.exp_DataFinder(sheetname=sheet_name, expotent_base=7, start_row=date_info[-1]['position'])
-        liner_search = sp.closetDataFinder(sheetname=sheet_name, start_row=meticulous_date_info[-1]['position'])
-        # 最も左側の空セルの位置を決定
-        target_position = liner_search[-1]['row'] + 6
+        if date_info[0]['position'] != 0:
+            # 過去の報告書が存在する場合
+            meticulous_date_info = sp.exp_DataFinder(sheetname=sheet_name, expotent_base=7, start_row=date_info[-1]['position'])
+            liner_search = sp.closetDataFinder(sheetname=sheet_name, start_row=meticulous_date_info[-1]['position'])
+
+            # 最も左側の空セルの位置を決定
+            target_position = liner_search[-1]['row'] + 6
+        else:
+            # 過去の報告書が存在しない場合
+            # 最初の報告書に入力する最初の位置は2列目固定
+            target_position = 2
+        
         # JSONデータをスプレッドシート形式に変換
         mapping = service.transform_data.load_json(mapping_file)
         transformed_data = service.transform_data.reverse_transform_data(report_data, mapping)
@@ -136,8 +152,7 @@ if __name__ == '__main__':
     #print(get_search_info())
     #x = get_subjects(sheet_id='1CEn2feUeQMfq885PVtyX96-ImOQxeqypeyePHpnPMg4')
     #print(x)
-    #z = user_info_exp(sheet_id='1CEn2feUeQMfq885PVtyX96-ImOQxeqypeyePHpnPMg4', subjects_id = 1059696948)
-    #print(type(z))
+    #z = user_info_exp(sheet_id='1ShyFHM6cn9LB_QLpwQsToX3ipFkmc6ELrbXledRr7ic', subjects_id = 374409231)
     #print(z)
     
     import uvicorn

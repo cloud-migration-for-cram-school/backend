@@ -21,10 +21,11 @@ credentials = Credentials.from_service_account_file(
     scopes = scopes
 )
 # シートの設定 ... 日付の間隔は7の倍数で入っている
-get_sample = 1 # 取得するデータの数
-skip_sheet_data = 42 # スキップするシートの数 42/7 =  4枚スキップする
-next_data = 35 # 次のデータを取得する数 5枚取得する
-past_data = -21 # 過去のデータを取得する数 3枚取得する
+GET_SAMPLE = 1 # 取得するデータの数
+SKIP_SHEET_DATA = 42 # スキップするシートの数 42/7 =  4枚スキップする
+NEXT_DATA = 35 # 次のデータを取得する数 5枚取得する
+PAST_DATA = -21 # 過去のデータを取得する数 3枚取得する
+DATETIME_FORMAT = "%m/%d %H:%M"
 
 class DriveService:
     def __init__(self):
@@ -74,9 +75,8 @@ class SpreadsheetService:
         今日から最も日付が近いセルの位置を取得
         dict型 'row': 列番号, 'str_row' : '文字型の列番号(ex ABG etc)'
         """
-        format_str = "%m/%d %H:%M"
-        differences = [abs(datetime.datetime.strptime(target_date, format_str) - datetime.datetime.strptime(date_position[0], format_str)) for date_position in dates_positions]
-        closest_indices = heapq.nsmallest(get_sample, range(len(differences)), key=differences.__getitem__)
+        differences = [abs(datetime.datetime.strptime(target_date, DATETIME_FORMAT) - datetime.datetime.strptime(date_position[0], DATETIME_FORMAT)) for date_position in dates_positions]
+        closest_indices = heapq.nsmallest(GET_SAMPLE, range(len(differences)), key=differences.__getitem__)
         return [(dates_positions[i][1]) for i in closest_indices]
 
     def closetDataFinder(self, sheetname, start_row):
@@ -86,7 +86,6 @@ class SpreadsheetService:
         """
         self.sheet = self.spreadsheet.worksheet(sheetname)
 
-        format_str = "%m/%d %H:%M"
         dates_positions = []
         
         while True:
@@ -95,9 +94,9 @@ class SpreadsheetService:
                 if compar_day is None:
                     break
 
-                f_format_day = datetime.datetime.strptime(compar_day, format_str).strftime(format_str)
+                f_format_day = datetime.datetime.strptime(compar_day, DATETIME_FORMAT).strftime(DATETIME_FORMAT)
                 dates_positions.append({'value':f_format_day, 'position':start_row})
-                start_row += skip_sheet_data
+                start_row += SKIP_SHEET_DATA
             except:
                 break
         # 選択したデータの近辺をさらに取得
@@ -114,7 +113,7 @@ class SpreadsheetService:
         try:
             max_position = max(item['position'] for item in row_data)    # dates_positionsの最大値を取得する
 
-            for i in range(0, next_data, 7): # 0,7はデフォルト値
+            for i in range(0, NEXT_DATA, 7): # 0,7はデフォルト値
                 now_position = max_position + i
                 compar_day = self.sheet.cell(1, now_position).value
                 if compar_day is None:
@@ -124,7 +123,7 @@ class SpreadsheetService:
                 dates_positions.append({'valueDate':f_format_day, 'row':now_position})
     
             if len(dates_positions) < 3:
-                for i in range(-7, past_data, -7): # -7はデフォルト値
+                for i in range(-7, PAST_DATA, -7): # -7はデフォルト値
                     now_position = max_position + i
                     compar_day = self.sheet.cell(1, now_position).value
                     
@@ -158,7 +157,6 @@ class SpreadsheetService:
         """
         self.sheet = self.spreadsheet.worksheet(sheetname)
 
-        format_str = "%m/%d %H:%M"
         dates_positions = []
         iteration_count = 0  # イテレーションのカウントを追跡
 
@@ -170,14 +168,18 @@ class SpreadsheetService:
             
             try:
                 compar_day = self.sheet.cell(1, row + start_row).value
-                if compar_day is None:
+                if compar_day is None and iteration_count==0:
+                    # 過去の報告書がない場合, 空の値と位置を返す
+                    dates_positions.append({'value':'', 'position':0})
+                    break
+                elif compar_day is None:
                     break
 
-                f_format_day = datetime.datetime.strptime(compar_day, format_str).strftime(format_str)
+                f_format_day = datetime.datetime.strptime(compar_day, DATETIME_FORMAT).strftime(DATETIME_FORMAT)
                 dates_positions.append({'value':f_format_day, 'position':row+start_row})
                 iteration_count += 1
             except:
-                print("except:datafinder")
+                print("except:datafinder-処理の終了")
                 break
         return dates_positions
     
