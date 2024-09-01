@@ -62,7 +62,6 @@ def user_info(sheet_id: str, subjects_id: int):
             break
     else:
         return {"error": "Subject not found"}
-    print(f'科目名 : {sheet_name}')
     date_info = sp.closetDataFinder(worksheetname=sheet_name, start_row=2)
     # date_infoを大きい順に並び替える
     sorted_date_info = sorted(date_info, key=lambda x: x['row'], reverse=True)
@@ -138,6 +137,40 @@ async def submit_report(sheet_id: str, subjects_id: str, request: Request):
             # 最初の報告書に入力する最初の位置は2列目固定
             target_position = 2
         
+        # JSONデータをスプレッドシート形式に変換
+        mapping = service.transform_data.load_json(mapping_file)
+        transformed_data = service.transform_data.reverse_transform_data(report_data, mapping)
+        # データをスプレッドシートに登録
+        sp.update_report(target_position, transformed_data, sheet_name=sheet_name)
+        return {"status": "success", "message": "Report submitted successfully."}
+    except Exception as e:
+        print(f"エラーが発生しました: {e}")
+        return {"error": f"エラーが発生しました: {str(e)}"}
+
+@app.post('/submit/report/old/{sheet_id}/{subjects_id}')
+async def submit_report_old(sheet_id: str, subjects_id: str, request: Request):
+    try:
+        # JSON データを取得
+        report_data = await request.json()  # awaitを使って結果を待つ
+        # SpreadsheetService のインスタンスを作成
+        sp = SpreadsheetService(fileID=sheet_id)
+        subjects = sp.get_worksheet()
+        # subjects_idを使用して、対応するシートの名前を検索
+        # subjects_idを使用して、対応するシートの名前を検索
+        for subject in subjects:
+            if subject['value'] == int(subjects_id):
+                sheet_name = subject['label']
+                break
+        else:
+            return {"error": "Subject not found"}
+        
+        # シート内で入力する位置を探索
+        date_info = sp.exp_DataFinder(sheetname=sheet_name, expotent_base=7, start_row=2)
+        meticulous_date_info = sp.exp_DataFinder(sheetname=sheet_name, expotent_base=7, start_row=date_info[-1]['position'])
+        liner_search = sp.closetDataFinder(sheetname=sheet_name, start_row=meticulous_date_info[-1]['position'])
+
+        # 最新の過去のデータの位置を取得
+        target_position = liner_search[-1]['row']
         # JSONデータをスプレッドシート形式に変換
         mapping = service.transform_data.load_json(mapping_file)
         transformed_data = service.transform_data.reverse_transform_data(report_data, mapping)
