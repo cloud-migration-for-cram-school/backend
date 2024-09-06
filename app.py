@@ -135,7 +135,7 @@ async def submit_report(sheet_id: str, subjects_id: str, request: Request):
         else:
             # 過去の報告書が存在しない場合
             # 最初の報告書に入力する最初の位置は2列目固定
-            target_position = 2
+            target_position = 1
         
         # JSONデータをスプレッドシート形式に変換
         mapping = service.transform_data.load_json(mapping_file)
