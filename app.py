@@ -1,80 +1,90 @@
-from googleapiclient.errors import HttpError
-from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
 import json
 import os
 from dotenv import load_dotenv
-import service.transform_data
+from googleapiclient.errors import HttpError
 from service.spreadsheet_service import SpreadsheetService, DriveService
-from fastapi import Request
+import service.transform_data
 
-
-
-# .envファイルから環境変数を読み込む
+# 環境変数の読み込み
 load_dotenv()
-
 mapping_file = os.getenv('MAPPING_FILE')
 
-#fastapiの有効化
-app = FastAPI()
+# Lambdaのエントリポイント関数
+def lambda_handler(event, context):
+    """
+    Lambdaハンドラ関数。API Gatewayからのリクエストを処理し、適切なレスポンスを返す。
+    """
+    path = event['path']
+    method = event['httpMethod']
 
-# FastAPI に CORS ミドルウェアを追加
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"], # 任意のオリジンからのリクエストを許可
-    allow_credentials=True,
-    allow_methods=["*"], # 任意の HTTP メソッドを許可
-    allow_headers=["*"], # 任意のヘッダーを許可
-)
+    # エンドポイントとメソッドに応じた処理の呼び出し
+    if path == '/search' and method == 'GET':
+        return get_search_info()
 
-#google drive内のファイル名とIDを取得
-@app.get('/search')
-def get_search_info():
-    deiveservice = DriveService()
-    try:
-        items = deiveservice.get_info()
-        # Create a list to hold the file names and IDs
-        file_info = []
-        # Loop through the items and add the file name and ID to the list
-        for item in items:
-            file_info.append({'label': item['name'], 'value': item['id']})
-        return file_info
-    except HttpError as error:
-        message = f'エラー: {error.content.decode("utf-8")}'
-        return message
+    elif path.startswith('/search/subjects/') and method == 'GET':
+        sheet_id = path.split('/')[-1]
+        return get_subjects(sheet_id)
 
-@app.get('/search/subjects/{sheet_id}')
-def get_subjects(sheet_id: str):
-    sp = SpreadsheetService(fileID=sheet_id)
-    subject = sp.get_worksheet()
-    return subject
+    elif path.startswith('/search/subjects/reports/') and method == 'GET':
+        path_parts = path.split('/')
+        sheet_id = path_parts[-2]
+        subjects_id = path_parts[-1]
+        return user_info_exp(sheet_id, subjects_id)
 
-# 一旦無効化
-def user_info(sheet_id: str, subjects_id: int):
-    sp = SpreadsheetService(fileID=sheet_id)
-    # 指定されたシートIDに対応するシートの情報を取得
-    subjects = sp.get_worksheet()
-    # subjects_idを使用して、対応するシートの名前を検索
-    for subject in subjects:
-        if subject['value'] == subjects_id:
-            sheet_name = subject['label']
-            break
+    elif path.startswith('/submit/report/') and method == 'POST':
+        path_parts = path.split('/')
+        sheet_id = path_parts[-2]
+        subjects_id = path_parts[-1]
+        body = json.loads(event['body'])
+        return submit_report(sheet_id, subjects_id, body)
+
     else:
-        return {"error": "Subject not found"}
-    print(f'科目名 : {sheet_name}')
-    date_info = sp.closetDataFinder(worksheetname=sheet_name, start_row=2)
-    # date_infoを大きい順に並び替える
-    sorted_date_info = sorted(date_info, key=lambda x: x['row'], reverse=True)
+        return {
+            'statusCode': 404,
+            'body': json.dumps({'message': 'Not Found'})
+        }
 
-    positions = [item['row'] for item in sorted_date_info]
-    old_sheet = sp.get_old_sheet(postionCell=positions[0], worksheetname=sheet_name)
-    mapping = service.transform_data.load_json(mapping_file)
+# 各エンドポイントの処理
 
-    transformed_data = service.transform_data.transform_data(old_sheet[0], mapping)
-    return json.dumps(transformed_data, ensure_ascii=False, indent=2)
+def get_search_info():
+    """
+    Google Driveのファイル情報を取得してレスポンスを返す。
+    """
+    try:
+        drive_service = DriveService()
+        items = drive_service.get_info()
+        file_info = [{'label': item['name'], 'value': item['id']} for item in items]
+        return {
+            'statusCode': 200,
+            'body': json.dumps(file_info)
+        }
+    except HttpError as error:
+        return {
+            'statusCode': 500,
+            'body': json.dumps({'error': error.content.decode('utf-8')})
+        }
 
-@app.get('/search/subjects/reports/{sheet_id}/{subjects_id}')
+def get_subjects(sheet_id: str):
+    """
+    指定されたスプレッドシートのIDに基づいて科目データを取得する。
+    """
+    try:
+        sp = SpreadsheetService(fileID=sheet_id)
+        subjects = sp.get_worksheet()
+        return {
+            'statusCode': 200,
+            'body': json.dumps(subjects)
+        }
+    except Exception as e:
+        return {
+            'statusCode': 500,
+            'body': json.dumps({'error': str(e)})
+        }
+
 def user_info_exp(sheet_id: str, subjects_id: str):
+    """
+    指定されたスプレッドシートIDと科目IDに基づいて、報告書データを取得し、変換する処理。
+    """
     try:
         sp = SpreadsheetService(fileID=sheet_id)
         subjects = sp.get_worksheet()
@@ -85,7 +95,10 @@ def user_info_exp(sheet_id: str, subjects_id: str):
                 break
 
         if sheet_name is None:
-            return {"error": "Subject not found こんにちは!こちらはbackendです!"}
+            return {
+                'statusCode': 404,
+                'body': json.dumps({'error': 'Subject not found'})
+            }
 
         date_info = sp.exp_DataFinder(sheetname=sheet_name, expotent_base=7, start_row=2)
         meticulous_date_info = sp.exp_DataFinder(sheetname=sheet_name, expotent_base=7, start_row=date_info[-1]['position'])
@@ -95,27 +108,32 @@ def user_info_exp(sheet_id: str, subjects_id: str):
         old_sheet = sp.get_old_sheet(postionCell=positions[0], sub_name=sheet_name)
         mapping = service.transform_data.load_json(mapping_file)
         transformed_data = service.transform_data.transform_data(old_sheet[0], mapping)
-        return transformed_data  # JSON形式としてそのまま返す
+
+        return {
+            'statusCode': 200,
+            'body': json.dumps(transformed_data)
+        }
     except Exception as e:
-        print(f"エラーが発生しました: {e}")
-        return {"error": f"エラーが発生しました: {str(e)}"}
+        return {
+            'statusCode': 500,
+            'body': json.dumps({'error': str(e)})
+        }
 
-
-@app.post('/submit/report/{sheet_id}/{subjects_id}')
-async def submit_report(sheet_id: str, subjects_id: str, request: Request):
+def submit_report(sheet_id: str, subjects_id: str, report_data):
     try:
-        # JSON データを取得
-        report_data = await request.json()  # awaitを使って結果を待つ
-        # SpreadsheetService のインスタンスを作成
         sp = SpreadsheetService(fileID=sheet_id)
         subjects = sp.get_worksheet()
-        # subjects_idを使用して、対応するシートの名前を検索
+        sheet_name = None
+
         for subject in subjects:
             if subject['value'] == int(subjects_id):
                 sheet_name = subject['label']
                 break
-        else:
-            return {"error": "Subject not found"}
+        if sheet_name is None:
+            return {
+                'statusCode': 404,
+                'body': json.dumps({'error': 'Subject not found'})
+            }
         # シート内で入力する位置を探索
         date_info = sp.exp_DataFinder(sheetname=sheet_name, expotent_base=7, start_row=2)
         meticulous_date_info = sp.exp_DataFinder(sheetname=sheet_name, expotent_base=7, start_row=date_info[-1]['position'])
@@ -127,18 +145,13 @@ async def submit_report(sheet_id: str, subjects_id: str, request: Request):
         transformed_data = service.transform_data.reverse_transform_data(report_data, mapping)
         # データをスプレッドシートに登録
         sp.update_report(target_position, transformed_data, sheet_name=sheet_name)
-        return {"status": "success", "message": "Report submitted successfully."}
-    except Exception as e:
-        print(f"エラーが発生しました: {e}")
-        return {"error": f"エラーが発生しました: {str(e)}"}
+        return {
+            'statusCode': 200,
+            'body': json.dumps({'status': 'success', 'message': 'Report submitted successfully.'})
+        }
 
-if __name__ == '__main__':
-    #print(get_search_info())
-    #x = get_subjects(sheet_id='1CEn2feUeQMfq885PVtyX96-ImOQxeqypeyePHpnPMg4')
-    #print(x)
-    #z = user_info_exp(sheet_id='1CEn2feUeQMfq885PVtyX96-ImOQxeqypeyePHpnPMg4', subjects_id = 1059696948)
-    #print(type(z))
-    #print(z)
-    
-    import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8080)
+    except Exception as e:
+        return {
+            'statusCode': 500,
+            'body': json.dumps({'error': str(e)})
+        }
