@@ -22,21 +22,21 @@ def lambda_handler(event, context):
         return get_search_info()
 
     elif path.startswith('/search/subjects/') and method == 'GET':
-        sheet_id = path.split('/')[-1]
-        return get_subjects(sheet_id)
+        sheetId = path.split('/')[-1]
+        return get_subjects(sheetId)
 
     elif path.startswith('/search/subjects/reports/') and method == 'GET':
         path_parts = path.split('/')
-        sheet_id = path_parts[-2]
-        subjects_id = path_parts[-1]
-        return user_info_exp(sheet_id, subjects_id)
+        sheetId = path_parts[-2]
+        subjectsId = path_parts[-1]
+        return user_info_exp(sheetId, subjectsId)
 
     elif path.startswith('/submit/report/') and method == 'POST':
         path_parts = path.split('/')
-        sheet_id = path_parts[-2]
-        subjects_id = path_parts[-1]
+        sheetId = path_parts[-2]
+        subjectsId = path_parts[-1]
         body = json.loads(event['body'])
-        return submit_report(sheet_id, subjects_id, body)
+        return submit_report(sheetId, subjectsId, body)
 
     else:
         return {
