@@ -1,1 +1,92 @@
-{}
+{
+  "api": {
+    "APIForCloudMigration": {
+      "dependsOn": [
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "getSubjects"
+        },
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "getSearchInfo"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "API Gateway"
+    }
+  },
+  "auth": {
+    "cloudbackend": {
+      "dependsOn": [],
+      "frontendAuthConfig": {
+        "mfaConfiguration": "OFF",
+        "mfaTypes": [
+          "SMS"
+        ],
+        "passwordProtectionSettings": {
+          "passwordPolicyCharacters": [],
+          "passwordPolicyMinLength": 8
+        },
+        "signupAttributes": [
+          "EMAIL"
+        ],
+        "socialProviders": [],
+        "usernameAttributes": [],
+        "verificationMechanisms": [
+          "EMAIL"
+        ]
+      },
+      "providerPlugin": "awscloudformation",
+      "service": "Cognito",
+      "serviceType": "managed"
+    }
+  },
+  "function": {
+    "getSearchInfo": {
+      "build": true,
+      "dependsOn": [],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "getSubjects": {
+      "build": true,
+      "dependsOn": [],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    }
+  },
+  "parameters": {
+    "AMPLIFY_function_getSearchInfo_apiPath": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "getSearchInfo"
+        }
+      ]
+    },
+    "AMPLIFY_function_getSearchInfo_folderId": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "getSearchInfo"
+        }
+      ]
+    },
+    "AMPLIFY_function_getSearchInfo_mappingFile": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "getSearchInfo"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "paths": {
+    "/search/subjects/{sheetId}": {
+      "name": "/search/subjects/{sheetId}",
+      "lambdaFunction": "getSubjects",
+      "permissions": {
+        "setting": "open"
+      }
+    },
+    "/search": {
+      "name": "/search",
+      "lambdaFunction": "getSearchInfo",
+      "permissions": {
+        "setting": "open"
+      }
+    }
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "lambdaLayers": [],
+  "environmentVariableList": [
+    {
+      "cloudFormationParameterName": "mappingFile",
+      "environmentVariableName": "MAPPING_FILE"
+    },
+    {
+      "cloudFormationParameterName": "folderId",
+      "environmentVariableName": "FOLDER_ID"
+    },
+    {
+      "cloudFormationParameterName": "apiPath",
+      "environmentVariableName": "API_PATH"
+    }
+  ]
+}
