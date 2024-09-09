@@ -3,7 +3,8 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import json
 import service.transform_data
-from service.spreadsheet_service import SpreadsheetService, DriveService
+from service.spreadsheet_service import SpreadsheetService
+from service.drive_service import DriveService
 from fastapi import Request
 
 #fastapiの有効化
