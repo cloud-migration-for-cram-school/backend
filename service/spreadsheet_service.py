@@ -49,12 +49,12 @@ class SpreadsheetService:
         closest_indices = heapq.nsmallest(GET_SAMPLE, range(len(differences)), key=differences.__getitem__)
         return [(dates_positions[i][1]) for i in closest_indices]
 
-    def find_closest_dates(self, sheetname, start_row):
+    def find_closest_dates(self, subject_id, start_row):
         """
         取得した日付と近い順に３つ値と位置を取得する
         returnはint 位置のみ
         """
-        self.sheet = self.spreadsheet.worksheet(sheetname)
+        self.sheet = self.spreadsheet.get_worksheet_by_id(subject_id)
 
         dates_positions = []
         
@@ -81,7 +81,6 @@ class SpreadsheetService:
 
         try:
             max_position = max(item['position'] for item in row_data)    # dates_positionsの最大値を取得する
-            print(f'max_position: {max_position}')
 
             for i in range(0, NEXT_DATA, 7): # 0,7はデフォルト値
                 now_position = max_position + i
@@ -107,25 +106,24 @@ class SpreadsheetService:
             print(f'except nearcompar date : {e}')
             return dates_positions
 
-    def get_old_sheet_data(self, postionCell, sub_name):
-        spreadsheet = self.gc.open_by_url(self.sheet_url)
-        spreadsheet = spreadsheet.worksheet(sub_name)
+    def get_old_sheet_data(self, postionCell, subject_id):
+        self.spreadsheet = self.spreadsheet.get_worksheet_by_id(subject_id)
 
         start_row = get_column_letter(postionCell-1)
         end_row = get_column_letter(postionCell+4)
 
         range_string = f'{start_row}1:{end_row}37'
-        base_data = spreadsheet.batch_get([range_string])  # batch_getはリスト形式の引数を取る
+        base_data = self.spreadsheet.batch_get([range_string])  # batch_getはリスト形式の引数を取る
         return base_data
 
-    def find_exponential_dates(self, sheetname, expotent_base, start_row):
+    def find_exponential_dates(self, subject_id, expotent_base, start_row):
         """
         指数探索版のfind_closet_datesを使って日付を取得
         2回指数探索を用いて端までデータを取得し、線形探索(find_nearby_dates)を用いてデータを確定する
         引数はシート名と指数の基数
         return はvalue : 日付, row : 位置 にする予定
         """
-        self.sheet = self.spreadsheet.worksheet(sheetname)
+        self.sheet = self.spreadsheet.get_worksheet_by_id(subject_id)
 
         dates_positions = []
         iteration_count = 0  # イテレーションのカウントを追跡
@@ -153,9 +151,9 @@ class SpreadsheetService:
                 break
         return dates_positions
     
-    def update_report(self, start_position, data, sheet_name):
+    def update_report(self, start_position, data, subject_id):
         try:
-            sheet = self.spreadsheet.worksheet(sheet_name)
+            sheet = self.spreadsheet.get_worksheet_by_id(subject_id)
             range_string = f"{get_column_letter(start_position)}1:{get_column_letter(start_position + len(data[0]) - 1)}{len(data)}"
 
             value_range = {
@@ -167,25 +165,3 @@ class SpreadsheetService:
         except Exception as e:
             print(f"Failed to update report: {e}")
             raise
-    
-    def autofill_date(self):
-        """
-        疑似データ作成
-        """
-        sheetname = '数学'
-        sheet = self.spreadsheet.worksheet(sheetname)
-        class_value = ["9:30", "11:00", "12:30", "14:00", "15:30", "17:00", "18:30", "20:00"]
-        constant = 0
-        date = datetime.date.today()  # 今日の日付を取得
-
-        while True:
-            for time in class_value:
-                cell_row = 1  # 代入する行
-                cell_col = 72 + constant  # 代入する列
-                date_str = date.strftime('%m/%d').lstrip("0").replace("/0", "/")  # 日付を指定されたフォーマットに変換
-                sheet.update_cell(cell_row, cell_col, f"{date_str} {time}")  # セルに日付と時間を代入
-                print(cell_row, cell_col, f"{date_str} {time}")
-                constant += 7
-            date += datetime.timedelta(days=1)  # 日付を翌日に更新
-            if constant == 49:
-                break
