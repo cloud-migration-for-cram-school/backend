@@ -10,16 +10,12 @@ import os
 # .envファイルから環境変数を読み込む
 load_dotenv()
 
-api_path = os.getenv('API_PATH')
-folder_id = os.getenv('FOLDER_ID')
+API_PATH = os.getenv('API_PATH')
+FOLDER_ID = os.getenv('FOLDER_ID')
 
 #google driveに設定
-scopes = ['https://www.googleapis.com/auth/drive']
+SCOPES = ['https://www.googleapis.com/auth/drive']
 
-credentials = Credentials.from_service_account_file(
-    api_path,
-    scopes = scopes
-)
 # シートの設定 ... 日付の間隔は7の倍数で入っている
 GET_SAMPLE = 1 # 取得するデータの数
 SKIP_SHEET_DATA = 42 # スキップするシートの数 42/7 =  4枚スキップする
@@ -27,47 +23,21 @@ NEXT_DATA = 35 # 次のデータを取得する数 5枚取得する
 PAST_DATA = -21 # 過去のデータを取得する数 3枚取得する
 DATETIME_FORMAT = "%m/%d %H:%M"
 
-class DriveService:
-    def __init__(self):
-        credentials = Credentials.from_service_account_file(
-            api_path,
-            scopes = scopes
-        )
-        self.drive_service = build('drive', 'v3', credentials=credentials)
-        # Google Sheets APIに接続
-        self.sheets_service = build('sheets', 'v4', credentials=credentials)
-        self.query = f"'{folder_id}' in parents"
-    
-    def get_info(self):
-        """
-        スプレッドシートのファイル名とIDを取得
-        """
-        try:
-            results = self.drive_service.files().list(q=self.query, fields='files(name, id)').execute()
-            items = results.get('files', [])
-            return items
-        except Exception as e:
-            print(e)
-
-
 class SpreadsheetService:
     def __init__(self, fileID=None):
         credentials = Credentials.from_service_account_file(
-            api_path,
-            scopes = scopes
+            API_PATH,
+            scopes = SCOPES
         )
-        self.credentials = credentials
-        self.fileID = fileID
-        self.sheet_url = f'https://docs.google.com/spreadsheets/d/{self.fileID}/edit?usp=sharing'
+        self.sheet_url = f'https://docs.google.com/spreadsheets/d/{fileID}/edit?usp=sharing'
         self.gc = gspread.authorize(credentials)
         self.spreadsheet = self.gc.open_by_url(self.sheet_url)
 
-    def get_worksheet(self):
+    def get_worksheets(self):
         """
         sheetidのシート名とIDを辞書として返す
         """
-        spreadsheet = self.gc.open_by_url(self.sheet_url)
-        worksheets = spreadsheet.worksheets()
+        worksheets = self.spreadsheet.worksheets()
         return [{'label': ws.title, 'value': ws.id} for ws in worksheets]
 
     def get_closest_positions(self, dates_positions, target_date):
@@ -79,7 +49,7 @@ class SpreadsheetService:
         closest_indices = heapq.nsmallest(GET_SAMPLE, range(len(differences)), key=differences.__getitem__)
         return [(dates_positions[i][1]) for i in closest_indices]
 
-    def closetDataFinder(self, sheetname, start_row):
+    def find_closest_dates(self, sheetname, start_row):
         """
         取得した日付と近い順に３つ値と位置を取得する
         returnはint 位置のみ
@@ -100,12 +70,12 @@ class SpreadsheetService:
             except:
                 break
         # 選択したデータの近辺をさらに取得
-        return self.near_compar_date(row_data=dates_positions)
+        return self.find_nearby_dates(row_data=dates_positions)
 
-    def near_compar_date(self, row_data):
+    def find_nearby_dates(self, row_data):
         """
         日付に関してのデータの取得
-        closetDataFinderで得たデータ付近を探索して日付が近いデータの位置を返す
+        find_closest_datesで得たデータ付近を探索して日付が近いデータの位置を返す
         """
         dates_positions = []
 
@@ -137,7 +107,7 @@ class SpreadsheetService:
             print(f'except nearcompar date : {e}')
             return dates_positions
 
-    def get_old_sheet(self, postionCell, sub_name):
+    def get_old_sheet_data(self, postionCell, sub_name):
         spreadsheet = self.gc.open_by_url(self.sheet_url)
         spreadsheet = spreadsheet.worksheet(sub_name)
 
@@ -148,10 +118,10 @@ class SpreadsheetService:
         base_data = spreadsheet.batch_get([range_string])  # batch_getはリスト形式の引数を取る
         return base_data
 
-    def exp_DataFinder(self, sheetname, expotent_base, start_row):
+    def find_exponential_dates(self, sheetname, expotent_base, start_row):
         """
-        指数探索版のclosetDataFinderを使って日付を取得
-        2回指数探索を用いて端までデータを取得し、線形探索(near_compar_date)を用いてデータを確定する
+        指数探索版のfind_closet_datesを使って日付を取得
+        2回指数探索を用いて端までデータを取得し、線形探索(find_nearby_dates)を用いてデータを確定する
         引数はシート名と指数の基数
         return はvalue : 日付, row : 位置 にする予定
         """
