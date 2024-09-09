@@ -125,13 +125,17 @@ async def submit_report(sheet_id: str, subjects_id: str, request: Request):
         
         # シート内で入力する位置を探索
         date_info = sp.exp_DataFinder(sheetname=sheet_name, expotent_base=7, start_row=2)
+        print(f'dateinfo: {date_info}')
         if date_info[0]['position'] != 0:
             # 過去の報告書が存在する場合
             meticulous_date_info = sp.exp_DataFinder(sheetname=sheet_name, expotent_base=7, start_row=date_info[-1]['position'])
+            print(f'meticulous_date_info: {meticulous_date_info}')
             liner_search = sp.closetDataFinder(sheetname=sheet_name, start_row=meticulous_date_info[-1]['position'])
+            print(f'liner_search: {liner_search}')
 
             # 最も左側の空セルの位置を決定
-            target_position = liner_search[-1]['row'] + 6
+            target_position = max(item['row'] for item in liner_search) + 6
+            print(f'target_position: {target_position}')
         else:
             # 過去の報告書が存在しない場合
             # 最初の報告書に入力する最初の位置は2列目固定
@@ -170,7 +174,7 @@ async def submit_report_old(sheet_id: str, subjects_id: str, request: Request):
         liner_search = sp.closetDataFinder(sheetname=sheet_name, start_row=meticulous_date_info[-1]['position'])
 
         # 最新の過去のデータの位置を取得
-        target_position = liner_search[-1]['row']
+        target_position = max(item['row'] for item in liner_search) - 1
         # JSONデータをスプレッドシート形式に変換
         mapping = service.transform_data.load_json(mapping_file)
         transformed_data = service.transform_data.reverse_transform_data(report_data, mapping)

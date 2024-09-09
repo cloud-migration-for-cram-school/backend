@@ -1,4 +1,5 @@
 import json
+from datetime import datetime
 
 def load_json(file_path):
     """JSON ファイルを読み込む"""
@@ -39,15 +40,15 @@ def reverse_transform_data(input_data, mapping):
 
     for key, value in mapping.items():
         if isinstance(value, list):
-            if all(isinstance(item, dict) for item in value):#"nextTest"の処理
+            if all(isinstance(item, dict) for item in value):  # "nextTest"の処理
                 for item, test in zip(value, input_data[key]):
                     for sub_key, sub_value in item.items():
                         row, col = sub_value
                         reversed_data[row][col] = test[sub_key]
-            else:#"studentStatus"の処理
+            else:  # "studentStatus"の処理
                 row, col = value
                 reversed_data[row][col] = input_data[key]
-        elif isinstance(value, dict):#"basicInfo"系と"lessonDetails", "homework"が通る
+        elif isinstance(value, dict):  # "basicInfo"系と"lessonDetails", "homework"が通る
             for sub_key, sub_value in value.items():
                 if sub_key == "lessons":
                     for item, lesson in zip(sub_value, input_data[key][sub_key]):
@@ -63,9 +64,17 @@ def reverse_transform_data(input_data, mapping):
                             reversed_data[task_row][task_col] = task_info['material']
                             range_row, range_col = task['rangeAndPages']
                             reversed_data[range_row][range_col] = task_info['rangeAndPages']
-                else:#"basicInfo"系の処理
+                else:  # "basicInfo"系の処理
                     row, col = sub_value
-                    reversed_data[row][col] = input_data[key][sub_key]
+                    if key == "basicInfo" and sub_key == "dateAndTime":
+                        # 日付を"09/09 18:30"から"9/9 18:30"にフォーマット
+                        date_str = input_data[key][sub_key]
+                        date_obj = datetime.strptime(date_str, "%m/%d %H:%M")
+                        # フォーマットの変更と'を防ぐ
+                        formatted_date = date_obj.strftime("%-m/%-d %H:%M")
+                        reversed_data[row][col] = formatted_date  # 文字列として保存
+                    else:
+                        reversed_data[row][col] = input_data[key][sub_key]
     return reversed_data
 
 def initialize_mapping_with_defaults(mapping):

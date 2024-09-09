@@ -109,9 +109,9 @@ class SpreadsheetService:
         """
         dates_positions = []
 
-        format_str = "%m/%d %H:%M"
         try:
             max_position = max(item['position'] for item in row_data)    # dates_positionsの最大値を取得する
+            print(f'max_position: {max_position}')
 
             for i in range(0, NEXT_DATA, 7): # 0,7はデフォルト値
                 now_position = max_position + i
@@ -119,7 +119,7 @@ class SpreadsheetService:
                 if compar_day is None:
                     break
 
-                f_format_day = datetime.datetime.strptime(compar_day, format_str).strftime(format_str)
+                f_format_day = datetime.datetime.strptime(compar_day, DATETIME_FORMAT).strftime(DATETIME_FORMAT)
                 dates_positions.append({'valueDate':f_format_day, 'row':now_position})
     
             if len(dates_positions) < 3:
@@ -127,7 +127,7 @@ class SpreadsheetService:
                     now_position = max_position + i
                     compar_day = self.sheet.cell(1, now_position).value
                     
-                    f_format_day = datetime.datetime.strptime(compar_day, format_str).strftime(format_str)
+                    f_format_day = datetime.datetime.strptime(compar_day, DATETIME_FORMAT).strftime(DATETIME_FORMAT)
                     dates_positions.append({'valueDate':f_format_day, 'row':now_position})
                     if len(dates_positions) == 3:
                         break
