@@ -1,12 +1,19 @@
 import json
 from datetime import datetime
+from dotenv import load_dotenv
+import os
 
 def load_json(file_path):
     """JSON ファイルを読み込む"""
     with open(file_path, 'r', encoding='utf-8') as file:
         return json.load(file)
+    
+load_dotenv()
 
-def transform_data(input_data, mapping):
+mapping_file_path = os.getenv('MAPPING_FILE')
+MAPPING = load_json(mapping_file_path)
+
+def transform_data(input_data, mapping=MAPPING):
     """入力データをマッピングに基づいて変換し、全てを文字列として処理する"""
     transformed_data = {}
     for key, value in mapping.items():
@@ -34,21 +41,21 @@ def transform_data(input_data, mapping):
             transformed_data[key] = None
     return transformed_data
 
-def reverse_transform_data(input_data, mapping):
+def reverse_transform_data(input_data, mapping=MAPPING):
     """入力データをスプレッドシート形式に変換する"""
     reversed_data = [[None] * 6 for _ in range(37)] 
 
     for key, value in mapping.items():
         if isinstance(value, list):
-            if all(isinstance(item, dict) for item in value):  # "nextTest"の処理
+            if all(isinstance(item, dict) for item in value):#"nextTest"の処理
                 for item, test in zip(value, input_data[key]):
                     for sub_key, sub_value in item.items():
                         row, col = sub_value
                         reversed_data[row][col] = test[sub_key]
-            else:  # "studentStatus"の処理
+            else:#"studentStatus"の処理
                 row, col = value
                 reversed_data[row][col] = input_data[key]
-        elif isinstance(value, dict):  # "basicInfo"系と"lessonDetails", "homework"が通る
+        elif isinstance(value, dict):#"basicInfo"系と"lessonDetails", "homework"が通る
             for sub_key, sub_value in value.items():
                 if sub_key == "lessons":
                     for item, lesson in zip(sub_value, input_data[key][sub_key]):
@@ -64,20 +71,12 @@ def reverse_transform_data(input_data, mapping):
                             reversed_data[task_row][task_col] = task_info['material']
                             range_row, range_col = task['rangeAndPages']
                             reversed_data[range_row][range_col] = task_info['rangeAndPages']
-                else:  # "basicInfo"系の処理
+                else:#"basicInfo"系の処理
                     row, col = sub_value
-                    if key == "basicInfo" and sub_key == "dateAndTime":
-                        # 日付を"09/09 18:30"から"9/9 18:30"にフォーマット
-                        date_str = input_data[key][sub_key]
-                        date_obj = datetime.strptime(date_str, "%m/%d %H:%M")
-                        # フォーマットの変更と'を防ぐ
-                        formatted_date = date_obj.strftime("%-m/%-d %H:%M")
-                        reversed_data[row][col] = formatted_date  # 文字列として保存
-                    else:
-                        reversed_data[row][col] = input_data[key][sub_key]
+                    reversed_data[row][col] = input_data[key][sub_key]
     return reversed_data
 
-def initialize_mapping_with_defaults(mapping):
+def initialize_mapping_with_defaults(mapping=MAPPING):
     """
     入力データをマッピングに基づいて変換し、すべてを空の文字列で初期化し、特定のキーにデフォルト値を設定する
     """
