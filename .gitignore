@@ -28,3 +28,5 @@ amplify/backend/auth/cloudbackend/cli-inputs.json
 amplify/backend/function/getSubjects/parameters.json
 amplify/backend/function/getSearchInfo/getSearchInfo-cloudformation-template.json
 amplify/backend/function/getSubjects/getSubjects-cloudformation-template.json
+amplify/backend/function/submitReport/submitReport-cloudformation-template.json
+amplify/backend/function/userInfoExp/userInfoExp-cloudformation-template.json

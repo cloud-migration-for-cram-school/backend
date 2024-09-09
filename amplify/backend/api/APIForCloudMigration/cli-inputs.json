@@ -14,6 +14,20 @@
       "permissions": {
         "setting": "open"
       }
+    },
+    "/search/subjects/reports/{sheetId}/{subjectsId}": {
+      "name": "/search/subjects/reports/{sheetId}/{subjectsId}",
+      "lambdaFunction": "userInfoExp",
+      "permissions": {
+        "setting": "open"
+      }
+    },
+    "/submit/report/{sheetId}/{subjectsId}": {
+      "name": "/submit/report/{sheetId}/{subjectsId}",
+      "lambdaFunction": "submitReport",
+      "permissions": {
+        "setting": "open"
+      }
     }
   }
 }

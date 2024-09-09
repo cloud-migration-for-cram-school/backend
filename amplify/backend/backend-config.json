@@ -17,6 +17,22 @@
           ],
           "category": "function",
           "resourceName": "getSearchInfo"
+        },
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "userInfoExp"
+        },
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "submitReport"
         }
       ],
       "providerPlugin": "awscloudformation",
@@ -59,6 +75,16 @@
     "getSubjects": {
       "build": true,
       "dependsOn": [],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "submitReport": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "userInfoExp": {
+      "build": true,
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     }
