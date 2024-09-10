@@ -202,7 +202,7 @@ def submit_report(sheet_id: str, subjects_id: int):
         transformed_data = reverse_transform_data(report_data, mapping)
 
         # データをスプレッドシートに登録
-        sp.update_report(target_position, transformed_data, sheet_name=sheet_name)
+        sp.update_report(target_position, transformed_data, subject_id=sheet_name)
 
         return {"status": "success", "message": "Report submitted successfully."}
     except Exception as e:

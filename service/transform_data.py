@@ -1,11 +1,19 @@
 import json
+from datetime import datetime
+from dotenv import load_dotenv
+import os
 
 def load_json(file_path):
     """JSON ファイルを読み込む"""
     with open(file_path, 'r', encoding='utf-8') as file:
         return json.load(file)
+    
+load_dotenv()
 
-def transform_data(input_data, mapping):
+mapping_file_path = os.getenv('MAPPING_FILE')
+MAPPING = load_json(mapping_file_path)
+
+def transform_data(input_data, mapping=MAPPING):
     """入力データをマッピングに基づいて変換し、全てを文字列として処理する"""
     transformed_data = {}
     for key, value in mapping.items():
@@ -33,7 +41,7 @@ def transform_data(input_data, mapping):
             transformed_data[key] = None
     return transformed_data
 
-def reverse_transform_data(input_data, mapping):
+def reverse_transform_data(input_data, mapping=MAPPING):
     """入力データをスプレッドシート形式に変換する"""
     reversed_data = [[None] * 6 for _ in range(37)] 
 
@@ -67,3 +75,28 @@ def reverse_transform_data(input_data, mapping):
                     row, col = sub_value
                     reversed_data[row][col] = input_data[key][sub_key]
     return reversed_data
+
+def initialize_mapping_with_defaults(mapping=MAPPING):
+    """
+    入力データをマッピングに基づいて変換し、すべてを空の文字列で初期化し、特定のキーにデフォルト値を設定する
+    """
+    transformed_data = {}
+    for key, value in mapping.items():
+        if isinstance(value, list):
+            transformed_data[key] = []
+            for item in value:
+                if isinstance(item, dict):
+                    transformed_data[key].append(initialize_mapping_with_defaults(item))
+                else:
+                    transformed_data[key].append("")  # リストの要素を空の文字列に初期化
+        elif isinstance(value, dict):
+            transformed_data[key] = initialize_mapping_with_defaults(value)
+        else:
+            transformed_data[key] = ""  # その他の値を空の文字列に初期化
+
+    # 特定のキーに対するデフォルト値を設定
+    if 'communication' in transformed_data:
+        transformed_data['communication']['forNextTeacher'] = "初回授業です"
+        transformed_data['communication']['fromDirector'] = ""
+
+    return transformed_data
