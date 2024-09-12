@@ -1,5 +1,4 @@
 import json
-from datetime import datetime
 from dotenv import load_dotenv
 import os
 
@@ -13,14 +12,24 @@ load_dotenv()
 mapping_file_path = os.getenv('MAPPING_FILE')
 MAPPING = load_json(mapping_file_path)
 
-def transform_data(input_data, mapping=MAPPING):
+def transform_data(input_data, reports_left, mapping=MAPPING):
     """入力データをマッピングに基づいて変換し、全てを文字列として処理する"""
     transformed_data = {}
+    
+    # spreadsheetInfo の部分を事前に追加しておく
+    transformed_data["spreadsheetInfo"] = {
+        "remainingReports": str(reports_left)
+    }
+    
     for key, value in mapping.items():
+        if key == "spreadsheetInfo":
+            # spreadsheetInfoの処理はスキップする
+            continue
+        
         if isinstance(value, list):
             # リスト内の要素が辞書の場合、再帰的に処理
             if all(isinstance(item, dict) for item in value):
-                transformed_data[key] = [transform_data(input_data, item) for item in value]
+                transformed_data[key] = [transform_data(input_data, reports_left, item) for item in value]
             else:
                 try:
                     row, col = value
@@ -35,11 +44,12 @@ def transform_data(input_data, mapping=MAPPING):
                     print(f"Error processing key {key}: cannot unpack {value}")
         elif isinstance(value, dict):
             # ネストされた構造の処理
-            transformed_data[key] = transform_data(input_data, value)
+            transformed_data[key] = transform_data(input_data, reports_left, value)
         else:
             # 予期せぬ形式の場合
             transformed_data[key] = None
     return transformed_data
+
 
 def reverse_transform_data(input_data, mapping=MAPPING):
     """入力データをスプレッドシート形式に変換する"""

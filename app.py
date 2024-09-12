@@ -73,7 +73,7 @@ def get_report(sheetId: str, subjectId: str):
         if date_info and date_info[0]['position'] != 0:
             # 過去の報告書が存在する場合の処理
             meticulous_date_info = sp.find_exponential_dates(subject_id=int(subjectId), expotent_base=7, start_row=date_info[-1]['position'])
-            positions = sp.find_closest_dates(subject_id=int(subjectId), start_row=meticulous_date_info[-1]['position'])
+            positions, remaining_report_count = sp.find_closest_dates(subject_id=int(subjectId), start_row=meticulous_date_info[-1]['position'])
 
             if not positions:
                 print("エラー: positionsが空です。")
@@ -83,7 +83,7 @@ def get_report(sheetId: str, subjectId: str):
 
             # データ取得とデータの整形
             old_sheet = sp.get_old_sheet_data(postionCell=row_position, subject_id=int(subjectId))
-            transformed_data = service.transform_data.transform_data(old_sheet[0])
+            transformed_data = service.transform_data.transform_data(old_sheet[0], remaining_report_count)
             return transformed_data  # JSON形式としてそのまま返す
         else:  # 過去の報告書が存在しない場合
             return service.transform_data.initialize_mapping_with_defaults()
@@ -105,7 +105,7 @@ async def submit_report(sheetId: str, subjectId: str, request: Request):
         if date_info[0]['position'] != 0:
             # 過去の報告書が存在する場合
             meticulous_date_info = sp.find_exponential_dates(subject_id=int(subjectId), expotent_base=7, start_row=date_info[-1]['position'])
-            liner_search = sp.find_closest_dates(subject_id=int(subjectId), start_row=meticulous_date_info[-1]['position'])
+            liner_search, remaining_report_count = sp.find_closest_dates(subject_id=int(subjectId), start_row=meticulous_date_info[-1]['position'])
 
             # 最も左側の空セルの位置を決定
             target_position = liner_search[0]['row'] + 6
@@ -134,7 +134,7 @@ async def submit_report_old(sheetId: str, subjectId: str, request: Request):
         # シート内で入力する位置を探索
         date_info = sp.find_exponential_dates(subject_id=int(subjectId), expotent_base=7, start_row=2)
         meticulous_date_info = sp.find_exponential_dates(subject_id=int(subjectId), expotent_base=7, start_row=date_info[-1]['position'])
-        liner_search = sp.find_closest_dates(subject_id=int(subjectId), start_row=meticulous_date_info[-1]['position'])
+        liner_search, remaining_report_count = sp.find_closest_dates(subject_id=int(subjectId), start_row=meticulous_date_info[-1]['position'])
 
         # 最新の過去のデータの位置を決定
         target_position = liner_search[0]['row'] - 1

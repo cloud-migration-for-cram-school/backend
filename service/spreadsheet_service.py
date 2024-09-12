@@ -97,25 +97,23 @@ class SpreadsheetService:
 
                 row_data[0]['position'] += 7  # 1枚スキップ取得
 
-            return dates_positions
+            return dates_positions, ""
 
         except APIError as e:
             print(f'報告書の残りの枚数が{empty_cell_count}枚です。')
             print(f'範囲外になりました\n{e}')
-            return dates_positions
+            return dates_positions, empty_cell_count
 
         except Exception as e:
             print(f'報告書の残りの枚数が{empty_cell_count}枚です。')
             print(f'except nearcompar date : {e}')
-            return dates_positions
+            return dates_positions, empty_cell_count
 
     def get_old_sheet_data(self, postionCell, subject_id):
         """
         過去のデータを取得する
         """
-        print(f'ファイル名 : {self.spreadsheet.title}')
         self.spreadsheet = self.spreadsheet.get_worksheet_by_id(subject_id)
-        print(f'シート名 : {self.spreadsheet.title}')
 
         start_row = get_column_letter(postionCell-1)
         end_row = get_column_letter(postionCell+4)
