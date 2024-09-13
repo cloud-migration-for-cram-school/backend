@@ -3,6 +3,8 @@ from transform_data import load_json
 from dotenv import load_dotenv
 import os
 from googleapiclient.discovery import build
+import json
+import os
 
 load_dotenv()
 TEMPLATE_ID = os.getenv('TEMPLATE_ID')
@@ -35,20 +37,39 @@ class MakeNewReport(SpreadsheetService):
             spreadsheetId=self.fileID,
             body=self.newsheet_setting
         ).execute()
-    
+
     def molding_json(self):
         """
         Jsonファイルを整形する関数
         """
         for request in self.newsheet_setting["requests"]:
-            if "range" in request.get("mergeCells", {}):
-                request["mergeCells"]["range"]["sheetId"] = self.sheetID
-            elif "range" in request.get("repeatCell", {}):
-                request["repeatCell"]["range"]["sheetId"] = self.sheetID
+            try:
+                # mergeCells の処理
+                if "range" in request.get("mergeCells", {}):
+                    request["mergeCells"]["range"]["sheetId"] = self.sheetID
+                    start_col = request["mergeCells"]["range"]["startColumnIndex"]
+                    end_col = request["mergeCells"]["range"]["endColumnIndex"]
+                    # 負の値を避けるためにmax()を使ってインデックスを修正
+                    request["mergeCells"]["range"]["startColumnIndex"] = max(0, self.position + start_col)
+                    request["mergeCells"]["range"]["endColumnIndex"] = max(0, self.position + end_col)
+                
+                # repeatCell の処理
+                elif "range" in request.get("repeatCell", {}):
+                    request["repeatCell"]["range"]["sheetId"] = self.sheetID
+                    start_col = request["repeatCell"]["range"]["startColumnIndex"]
+                    end_col = request["repeatCell"]["range"]["endColumnIndex"]
+                    # 負の値を避けるためにmax()を使ってインデックスを修正
+                    request["repeatCell"]["range"]["startColumnIndex"] = max(0, self.position + start_col)
+                    request["repeatCell"]["range"]["endColumnIndex"] = max(0, self.position + end_col)
+                    
+            except Exception as e:
+                print(e)
+                continue
+
 
 if __name__ == '__main__':
     URL = '1NjVsRdbP1sQPgllo9wGYfpbmKjSWQ3us4_dMljvWN14'
-    test = MakeNewReport(fileID=URL, sheetID=1300349524)
+    test = MakeNewReport(fileID=URL, sheetID=1300349524, position = 8)
     test.apply_json_to_sheet()  # 整形後にAPIに送信
 
 
