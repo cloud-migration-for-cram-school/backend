@@ -1,6 +1,69 @@
 {
     "requests": [
         {
+            "repeatCell": {
+                "range": {
+                    "sheetId": 0,
+                    "startRowIndex": 0,
+                    "endRowIndex": 2,
+                    "startColumnIndex": 0,
+                    "endColumnIndex": 1
+                },
+                "cell": {
+                    "userEnteredFormat": {
+                        "backgroundColor": {
+                            "red": 0.811765,
+                            "green": 0.886275,
+                            "blue": 0.952941
+                        }
+                    }
+                },
+                "fields": "userEnteredFormat.backgroundColor"
+            }
+        },
+        {
+            "repeatCell": {
+                "range": {
+                    "sheetId": 0,
+                    "startRowIndex": 0,
+                    "endRowIndex": 2,
+                    "startColumnIndex": 2,
+                    "endColumnIndex": 3
+                },
+                "cell": {
+                    "userEnteredFormat": {
+                        "backgroundColor": {
+                            "red": 0.811765,
+                            "green": 0.886275,
+                            "blue": 0.952941
+                        }
+                    }
+                },
+                "fields": "userEnteredFormat.backgroundColor"
+            }
+        },
+        {
+            "repeatCell": {
+                "range": {
+                    "sheetId": 0,
+                    "startRowIndex": 0,
+                    "endRowIndex": 2,
+                    "startColumnIndex": 4,
+                    "endColumnIndex": 5
+                },
+                "cell": {
+                    "userEnteredFormat": {
+                        "backgroundColor": {
+                            "red": 0.811765,
+                            "green": 0.886275,
+                            "blue": 0.952941
+                        }
+                    }
+                },
+                "fields": "userEnteredFormat.backgroundColor"
+            }
+        },
+        {
             "mergeCells": {
                 "sheetId": 0,
                 "startRowIndex": 2,
@@ -39,6 +102,27 @@
                 "endColumnIndex": 6
             },
             "mergeType": "MERGE_ALL"
+        },
+        {
+            "repeatCell": {
+                "range": {
+                    "sheetId": 0,
+                    "startRowIndex": 2,
+                    "endRowIndex": 6,
+                    "startColumnIndex": 0,
+                    "endColumnIndex": 1
+                },
+                "cell": {
+                    "userEnteredFormat": {
+                        "backgroundColor": {
+                            "red": 0.917647,
+                            "green": 0.6,
+                            "blue": 0.6
+                        }
+                    }
+                },
+                "fields": "userEnteredFormat.backgroundColor"
+            }
         },
         {
             "margeCells" : {
@@ -81,9 +165,114 @@
             "mergeType": "MERGE_ALL"
         },
         {
+            "repeatCell": {
+                "range": {
+                    "sheetId": 0,
+                    "startRowIndex": 6,
+                    "endRowIndex": 7,
+                    "startColumnIndex": 0,
+                    "endColumnIndex": 1
+                },
+                "cell": {
+                    "userEnteredFormat": {
+                        "backgroundColor": {
+                            "red": 0.85098,
+                            "green": 0.917647,
+                            "blue": 0.827451
+                        }
+                    }
+                },
+                "fields": "userEnteredFormat.backgroundColor"
+            }
+        },
+        {
+            "repeatCell": {
+                "range": {
+                    "sheetId": 0,
+                    "startRowIndex": 6,
+                    "endRowIndex": 8,
+                    "startColumnIndex": 1,
+                    "endColumnIndex": 2
+                },
+                "cell": {
+                    "userEnteredFormat": {
+                        "backgroundColor": {
+                            "red": 0.85098,
+                            "green": 0.917647,
+                            "blue": 0.827451
+                        }
+                    }
+                },
+                "fields": "userEnteredFormat.backgroundColor"
+            }
+        },
+        {
+            "repeatCell": {
+                "range": {
+                    "sheetId": 0,
+                    "startRowIndex": 8,
+                    "endRowIndex": 9,
+                    "startColumnIndex": 0,
+                    "endColumnIndex": 2
+                },
+                "cell": {
+                    "userEnteredFormat": {
+                        "backgroundColor": {
+                            "red": 0.85098,
+                            "green": 0.917647,
+                            "blue": 0.827451
+                        }
+                    }
+                },
+                "fields": "userEnteredFormat.backgroundColor"
+            }
+        },
+        {
+            "repeatCell": {
+                "range": {
+                    "sheetId": 0,
+                    "startRowIndex": 9,
+                    "endRowIndex": 10,
+                    "startColumnIndex": 0,
+                    "endColumnIndex": 6
+                },
+                "cell": {
+                    "userEnteredFormat": {
+                        "backgroundColor": {
+                            "red": 1,
+                            "green": 0.94902,
+                            "blue": 0.8
+                        }
+                    }
+                },
+                "fields": "userEnteredFormat.backgroundColor"
+            }
+        },
+        {
+            "repeatCell": {
+                "range": {
+                    "sheetId": 0,
+                    "startRowIndex": 13,
+                    "endRowIndex": 15,
+                    "startColumnIndex": 0,
+                    "endColumnIndex": 1
+                },
+                "cell": {
+                    "userEnteredFormat": {
+                        "backgroundColor": {
+                            "red": 1,
+                            "green": 0.94902,
+                            "blue": 0.8
+                        }
+                    }
+                },
+                "fields": "userEnteredFormat.backgroundColor"
+            }
+        },
+        {
             "mergeCells" : {
                 "sheetId": 0,
-                "startRowIndex": 14,
+                "startRowIndex": 13,
                 "endRowIndex": 16,
                 "startColumnIndex": 1,
                 "endColumnIndex": 6
@@ -99,6 +288,27 @@
                 "endColumnIndex": 1
             },
             "mergeType": "MERGE_ALL"
+        },
+        {
+            "repeatCell": {
+                "range": {
+                    "sheetId": 0,
+                    "startRowIndex": 15,
+                    "endRowIndex": 25,
+                    "startColumnIndex": 0,
+                    "endColumnIndex": 1
+                },
+                "cell": {
+                    "userEnteredFormat": {
+                        "backgroundColor": {
+                            "red": 0.988235,
+                            "green": 0.898039,
+                            "blue": 0.803922
+                        }
+                    }
+                },
+                "fields": "userEnteredFormat.backgroundColor"
+            }
         },
         {
             "mergeCells" : {
@@ -131,6 +341,27 @@
             "mergeType": "MERGE_ALL"
         },
         {
+            "repeatCell": {
+                "range": {
+                    "sheetId": 0,
+                    "startRowIndex": 15,
+                    "endRowIndex": 17,
+                    "startColumnIndex": 1,
+                    "endColumnIndex": 6
+                },
+                "cell": {
+                    "userEnteredFormat": {
+                        "backgroundColor": {
+                            "red": 0.988235,
+                            "green": 0.898039,
+                            "blue": 0.803922
+                        }
+                    }
+                },
+                "fields": "userEnteredFormat.backgroundColor"
+            }
+        },
+        {
             "mergeCells" : {
                 "sheetId": 0,
                 "startRowIndex": 23,
@@ -149,6 +380,27 @@
                 "endColumnIndex": 3
             },
             "mergeType": "MERGE_ALL"
+        },
+        {
+            "repeatCell": {
+                "range": {
+                    "sheetId": 0,
+                    "startRowIndex": 23,
+                    "endRowIndex": 25,
+                    "startColumnIndex": 0,
+                    "endColumnIndex": 3
+                },
+                "cell": {
+                    "userEnteredFormat": {
+                        "backgroundColor": {
+                            "red": 0.988235,
+                            "green": 0.898039,
+                            "blue": 0.803922
+                        }
+                    }
+                },
+                "fields": "userEnteredFormat.backgroundColor"
+            }
         },
         {
             "mergeCells" : {
@@ -181,6 +433,27 @@
             "mergeType": "MERGE_ALL"
         },
         {
+            "repeatCell": {
+                "range": {
+                    "sheetId": 0,
+                    "startRowIndex": 25,
+                    "endRowIndex": 31,
+                    "startColumnIndex": 0,
+                    "endColumnIndex": 1
+                },
+                "cell": {
+                    "userEnteredFormat": {
+                        "backgroundColor": {
+                            "red": 0.917647,
+                            "green": 0.819608,
+                            "blue": 0.862745
+                        }
+                    }
+                },
+                "fields": "userEnteredFormat.backgroundColor"
+            }
+        },
+        {
             "mergeCells" : {
                 "sheetId": 0,
                 "startRowIndex": 25,
@@ -219,6 +492,27 @@
                 "endColumnIndex": 6
             },
             "mergeType": "MERGE_ALL"
+        },
+        {
+            "repeatCell": {
+                "range": {
+                    "sheetId": 0,
+                    "startRowIndex": 25,
+                    "endRowIndex": 26,
+                    "startColumnIndex": 1,
+                    "endColumnIndex": 6
+                },
+                "cell": {
+                    "userEnteredFormat": {
+                        "backgroundColor": {
+                            "red": 0.917647,
+                            "green": 0.819608,
+                            "blue": 0.862745
+                        }
+                    }
+                },
+                "fields": "userEnteredFormat.backgroundColor"
+            }
         },
         {
             "mergeCells" : {
@@ -261,6 +555,27 @@
             "mergeType": "MERGE_ALL"
         },
         {
+            "repeatCell": {
+                "range": {
+                    "sheetId": 0,
+                    "startRowIndex": 27,
+                    "endRowIndex": 28,
+                    "startColumnIndex": 1,
+                    "endColumnIndex": 6
+                },
+                "cell": {
+                    "userEnteredFormat": {
+                        "backgroundColor": {
+                            "red": 0.917647,
+                            "green": 0.819608,
+                            "blue": 0.862745
+                        }
+                    }
+                },
+                "fields": "userEnteredFormat.backgroundColor"
+            }
+        },
+        {
             "mergeCells" : {
                 "sheetId": 0,
                 "startRowIndex": 29,
@@ -299,6 +614,27 @@
                 "endColumnIndex": 6
             },
             "mergeType": "MERGE_ALL"
+        },
+        {
+            "repeatCell": {
+                "range": {
+                    "sheetId": 0,
+                    "startRowIndex": 29,
+                    "endRowIndex": 30,
+                    "startColumnIndex": 1,
+                    "endColumnIndex": 6
+                },
+                "cell": {
+                    "userEnteredFormat": {
+                        "backgroundColor": {
+                            "red": 0.917647,
+                            "green": 0.819608,
+                            "blue": 0.862745
+                        }
+                    }
+                },
+                "fields": "userEnteredFormat.backgroundColor"
+            }
         },
         {
             "mergeCells" : {
@@ -309,6 +645,27 @@
                 "endColumnIndex": 2
             },
             "mergeType": "MERGE_ALL"
+        },
+        {
+            "repeatCell": {
+                "range": {
+                    "sheetId": 0,
+                    "startRowIndex": 31,
+                    "endRowIndex": 33,
+                    "startColumnIndex": 0,
+                    "endColumnIndex": 2
+                },
+                "cell": {
+                    "userEnteredFormat": {
+                        "backgroundColor": {
+                            "red": 0.901961,
+                            "green": 0.721569,
+                            "blue": 0.686275
+                        }
+                    }
+                },
+                "fields": "userEnteredFormat.backgroundColor"
+            }
         },
         {
             "mergeCells" : {
@@ -369,6 +726,27 @@
                 "endColumnIndex": 6
             },
             "mergeType": "MERGE_ALL"
+        },
+        {
+            "repeatCell": {
+                "range": {
+                    "sheetId": 0,
+                    "startRowIndex": 33,
+                    "endRowIndex": 37,
+                    "startColumnIndex": 0,
+                    "endColumnIndex": 2
+                },
+                "cell": {
+                    "userEnteredFormat": {
+                        "backgroundColor": {
+                            "red": 0.788236,
+                            "green": 0.854902,
+                            "blue": 0.972549
+                        }
+                    }
+                },
+                "fields": "userEnteredFormat.backgroundColor"
+            }
         }
     ]
 }
