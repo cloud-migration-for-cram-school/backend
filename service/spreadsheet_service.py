@@ -26,12 +26,12 @@ NOTIFICATION_THRESHOLD = 5  # 空の報告書が5未満になったら通知を�
 
 class SpreadsheetService:
     def __init__(self, fileID=None):
-        credentials = Credentials.from_service_account_file(
+        self.credentials = Credentials.from_service_account_file(
             API_PATH,
             scopes = SCOPES
         )
         self.sheet_url = f'https://docs.google.com/spreadsheets/d/{fileID}/edit?usp=sharing'
-        self.gc = gspread.authorize(credentials)
+        self.gc = gspread.authorize(self.credentials)
         self.spreadsheet = self.gc.open_by_url(self.sheet_url)
 
     def get_worksheets(self):

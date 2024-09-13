@@ -1,20 +1,21 @@
-from service.spreadsheet_service import SpreadsheetService
+from spreadsheet_service import SpreadsheetService
+from transform_data import load_json
 from dotenv import load_dotenv
-from service.transform_data import load_json
 import os
 from googleapiclient.discovery import build
 
 load_dotenv()
 TEMPLATE_ID = os.getenv('TEMPLATE_ID')
-NEWSHEET_SETTING_PATH = os.getenv('NEWSHEET_SETTING')
+newsheet_setting_path = os.getenv('NEWSHEET_SETTING')
 
 NUMBER_OF_SHEET = 10 # 新しく作るシートの枚数
 
 class MakeNewReport(SpreadsheetService):
     def __init__(self, fileID=None, position=None):
         super().__init__(fileID)
+        self.fileID = fileID
         self.service = build('sheets', 'v4', credentials=self.credentials)
-        self.newsheet_setting = load_json(NEWSHEET_SETTING_PATH)
+        self.newsheet_setting = load_json(newsheet_setting_path)
         self.position = position
     
     def copy_template(self):
@@ -29,6 +30,18 @@ class MakeNewReport(SpreadsheetService):
         """
         pass
     
+    def debug_test(self):
+        # batchUpdateリクエストの送信
+        self.service.spreadsheets().batchUpdate(
+            spreadsheetId=self.fileID,
+            body=self.newsheet_setting
+        ).execute()
+        print("Success")
+
+if __name__ == '__main__':
+    URL = '1NjVsRdbP1sQPgllo9wGYfpbmKjSWQ3us4_dMljvWN14'
+    test = MakeNewReport(fileID=URL)
+    test.debug_test()
 
 """
 ガチの自分用のメモ
