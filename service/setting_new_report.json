@@ -873,10 +873,13 @@
                     },
                     "userEnteredFormat": {
                         "horizontalAlignment": "CENTER",
-                        "verticalAlignment": "MIDDLE"
+                        "verticalAlignment": "MIDDLE",
+                        "textFormat" : {
+                            "fontSize" : 8
+                        }
                     }
                 },
-                "fields": "userEnteredValue,userEnteredFormat(horizontalAlignment,verticalAlignment)"
+                "fields": "userEnteredValue,userEnteredFormat(horizontalAlignment,verticalAlignment,textFormat)"
             }
         },
         {
@@ -894,10 +897,13 @@
                     },
                     "userEnteredFormat": {
                         "horizontalAlignment": "CENTER",
-                        "verticalAlignment": "MIDDLE"
+                        "verticalAlignment": "MIDDLE",
+                        "textFormat" : {
+                            "fontSize" : 8
+                        }
                     }
                 },
-                "fields": "userEnteredValue,userEnteredFormat(horizontalAlignment,verticalAlignment)"
+                "fields": "userEnteredValue,userEnteredFormat(horizontalAlignment,verticalAlignment,textFormat)"
             }
         },
         {
@@ -915,10 +921,13 @@
                     },
                     "userEnteredFormat": {
                         "horizontalAlignment": "CENTER",
-                        "verticalAlignment": "MIDDLE"
+                        "verticalAlignment": "MIDDLE",
+                        "textFormat" : {
+                            "fontSize" : 8
+                        }
                     }
                 },
-                "fields": "userEnteredValue,userEnteredFormat(horizontalAlignment,verticalAlignment)"
+                "fields": "userEnteredValue,userEnteredFormat(horizontalAlignment,verticalAlignment,textFormat)"
             }
         },
         {
@@ -936,10 +945,13 @@
                     },
                     "userEnteredFormat": {
                         "horizontalAlignment": "CENTER",
-                        "verticalAlignment": "MIDDLE"
+                        "verticalAlignment": "MIDDLE",
+                        "textFormat" : {
+                            "fontSize" : 8
+                        }
                     }
                 },
-                "fields": "userEnteredValue,userEnteredFormat(horizontalAlignment,verticalAlignment)"
+                "fields": "userEnteredValue,userEnteredFormat(horizontalAlignment,verticalAlignment,textFormat)"
             }
         },
         {
@@ -956,10 +968,13 @@
                         "stringValue": "宿題"
                     },
                     "userEnteredFormat": {
-                        "horizontalAlignment": "CENTER"
+                        "horizontalAlignment": "CENTER",
+                        "textFormat" : {
+                            "fontSize" : 8
+                        }
                     }
                 },
-                "fields": "userEnteredValue,userEnteredFormat(horizontalAlignment,verticalAlignment)"
+                "fields": "userEnteredValue,userEnteredFormat(horizontalAlignment,verticalAlignment,textFormat)"
             }
         },
         {
@@ -977,10 +992,13 @@
                     },
                     "userEnteredFormat": {
                         "horizontalAlignment": "CENTER",
-                        "verticalAlignment": "MIDDLE"
+                        "verticalAlignment": "MIDDLE",
+                        "textFormat" : {
+                            "fontSize" : 8
+                        }
                     }
                 },
-                "fields": "userEnteredValue,userEnteredFormat(horizontalAlignment,verticalAlignment)"
+                "fields": "userEnteredValue,userEnteredFormat(horizontalAlignment,verticalAlignment,textFormat)"
             }
         },
         {
@@ -998,10 +1016,13 @@
                     },
                     "userEnteredFormat": {
                         "horizontalAlignment": "CENTER",
-                        "verticalAlignment": "MIDDLE"
+                        "verticalAlignment": "MIDDLE",
+                        "textFormat" : {
+                            "fontSize" : 8
+                        }
                     }
                 },
-                "fields": "userEnteredValue,userEnteredFormat(horizontalAlignment,verticalAlignment)"
+                "fields": "userEnteredValue,userEnteredFormat(horizontalAlignment,verticalAlignment,textFormat)"
             }
         },
         {
@@ -1019,10 +1040,13 @@
                     },
                     "userEnteredFormat": {
                         "horizontalAlignment": "CENTER",
-                        "verticalAlignment": "MIDDLE"
+                        "verticalAlignment": "MIDDLE",
+                        "textFormat" : {
+                            "fontSize" : 8
+                        }
                     }
                 },
-                "fields": "userEnteredValue,userEnteredFormat(horizontalAlignment,verticalAlignment)"
+                "fields": "userEnteredValue,userEnteredFormat(horizontalAlignment,verticalAlignment,textFormat)"
             }
         },
         {
@@ -1040,10 +1064,13 @@
                     },
                     "userEnteredFormat": {
                         "horizontalAlignment": "CENTER",
-                        "verticalAlignment": "MIDDLE"
+                        "verticalAlignment": "MIDDLE",
+                        "textFormat" : {
+                            "fontSize" : 8
+                        }
                     }
                 },
-                "fields": "userEnteredValue,userEnteredFormat(horizontalAlignment,verticalAlignment)"
+                "fields": "userEnteredValue,userEnteredFormat(horizontalAlignment,verticalAlignment,textFormat)"
             }
         },
         {
@@ -1061,10 +1088,13 @@
                     },
                     "userEnteredFormat": {
                         "horizontalAlignment": "CENTER",
-                        "verticalAlignment": "MIDDLE"
+                        "verticalAlignment": "MIDDLE",
+                        "textFormat" : {
+                            "fontSize" : 8
+                        }
                     }
                 },
-                "fields": "userEnteredValue,userEnteredFormat(horizontalAlignment,verticalAlignment)"
+                "fields": "userEnteredValue,userEnteredFormat(horizontalAlignment,verticalAlignment,textFormat)"
             }
         },
         {
@@ -1082,10 +1112,13 @@
                     },
                     "userEnteredFormat": {
                         "horizontalAlignment": "CENTER",
-                        "verticalAlignment": "MIDDLE"
+                        "verticalAlignment": "MIDDLE",
+                        "textFormat" : {
+                            "fontSize" : 8
+                        }
                     }
                 },
-                "fields": "userEnteredValue,userEnteredFormat(horizontalAlignment,verticalAlignment)"
+                "fields": "userEnteredValue,userEnteredFormat(horizontalAlignment,verticalAlignment,textFormat)"
             }
         },
         {
@@ -1103,10 +1136,13 @@
                     },
                     "userEnteredFormat": {
                         "horizontalAlignment": "CENTER",
-                        "verticalAlignment": "MIDDLE"
+                        "verticalAlignment": "MIDDLE",
+                        "textFormat" : {
+                            "fontSize" : 8
+                        }
                     }
                 },
-                "fields": "userEnteredValue,userEnteredFormat(horizontalAlignment,verticalAlignment)"
+                "fields": "userEnteredValue,userEnteredFormat(horizontalAlignment,verticalAlignment,textFormat)"
             }
         },
         {
@@ -1124,10 +1160,13 @@
                     },
                     "userEnteredFormat": {
                         "horizontalAlignment": "CENTER",
-                        "verticalAlignment": "MIDDLE"
+                        "verticalAlignment": "MIDDLE",
+                        "textFormat" : {
+                            "fontSize" : 8
+                        }
                     }
                 },
-                "fields": "userEnteredValue,userEnteredFormat(horizontalAlignment,verticalAlignment)"
+                "fields": "userEnteredValue,userEnteredFormat(horizontalAlignment,verticalAlignment,textFormat)"
             }
         },
         {
@@ -1145,10 +1184,13 @@
                     },
                     "userEnteredFormat": {
                         "horizontalAlignment": "CENTER",
-                        "verticalAlignment": "MIDDLE"
+                        "verticalAlignment": "MIDDLE",
+                        "textFormat" : {
+                            "fontSize" : 8
+                        }
                     }
                 },
-                "fields": "userEnteredValue,userEnteredFormat(horizontalAlignment,verticalAlignment)"
+                "fields": "userEnteredValue,userEnteredFormat(horizontalAlignment,verticalAlignment,textFormat)"
             }
         },
         {
@@ -1166,10 +1208,13 @@
                     },
                     "userEnteredFormat": {
                         "horizontalAlignment": "CENTER",
-                        "verticalAlignment": "MIDDLE"
+                        "verticalAlignment": "MIDDLE",
+                        "textFormat" : {
+                            "fontSize" : 8
+                        }
                     }
                 },
-                "fields": "userEnteredValue,userEnteredFormat(horizontalAlignment,verticalAlignment)"
+                "fields": "userEnteredValue,userEnteredFormat(horizontalAlignment,verticalAlignment,textFormat)"
             }
         },
         {
@@ -1187,10 +1232,13 @@
                     },
                     "userEnteredFormat": {
                         "horizontalAlignment": "CENTER",
-                        "verticalAlignment": "MIDDLE"
+                        "verticalAlignment": "MIDDLE",
+                        "textFormat" : {
+                            "fontSize" : 8
+                        }
                     }
                 },
-                "fields": "userEnteredValue,userEnteredFormat(horizontalAlignment,verticalAlignment)"
+                "fields": "userEnteredValue,userEnteredFormat(horizontalAlignment,verticalAlignment,textFormat)"
             }
         },
         {
@@ -1208,10 +1256,13 @@
                     },
                     "userEnteredFormat": {
                         "horizontalAlignment": "CENTER",
-                        "verticalAlignment": "MIDDLE"
+                        "verticalAlignment": "MIDDLE",
+                        "textFormat" : {
+                            "fontSize" : 8
+                        }
                     }
                 },
-                "fields": "userEnteredValue,userEnteredFormat(horizontalAlignment,verticalAlignment)"
+                "fields": "userEnteredValue,userEnteredFormat(horizontalAlignment,verticalAlignment,textFormat)"
             }
         },
         {
@@ -1229,10 +1280,13 @@
                     },
                     "userEnteredFormat": {
                         "horizontalAlignment": "CENTER",
-                        "verticalAlignment": "MIDDLE"
+                        "verticalAlignment": "MIDDLE",
+                        "textFormat" : {
+                            "fontSize" : 8
+                        }
                     }
                 },
-                "fields": "userEnteredValue,userEnteredFormat(horizontalAlignment,verticalAlignment)"
+                "fields": "userEnteredValue,userEnteredFormat(horizontalAlignment,verticalAlignment,textFormat)"
             }
         },
         {
@@ -1249,10 +1303,13 @@
                         "stringValue": "宿題"
                     },
                     "userEnteredFormat": {
-                        "horizontalAlignment": "CENTER"
+                        "horizontalAlignment": "CENTER",
+                        "textFormat" : {
+                            "fontSize" : 8
+                        }
                     }
                 },
-                "fields": "userEnteredValue,userEnteredFormat(horizontalAlignment,verticalAlignment)"
+                "fields": "userEnteredValue,userEnteredFormat(horizontalAlignment,verticalAlignment,textFormat)"
             }
         },
         {
@@ -1270,10 +1327,13 @@
                     },
                     "userEnteredFormat": {
                         "horizontalAlignment": "CENTER",
-                        "verticalAlignment": "MIDDLE"
+                        "verticalAlignment": "MIDDLE",
+                        "textFormat" : {
+                            "fontSize" : 8
+                        }
                     }
                 },
-                "fields": "userEnteredValue,userEnteredFormat(horizontalAlignment,verticalAlignment)"
+                "fields": "userEnteredValue,userEnteredFormat(horizontalAlignment,verticalAlignment,textFormat)"
             }
         },
         {
@@ -1291,10 +1351,13 @@
                     },
                     "userEnteredFormat": {
                         "horizontalAlignment": "CENTER",
-                        "verticalAlignment": "MIDDLE"
+                        "verticalAlignment": "MIDDLE",
+                        "textFormat" : {
+                            "fontSize" : 8
+                        }
                     }
                 },
-                "fields": "userEnteredValue,userEnteredFormat(horizontalAlignment,verticalAlignment)"
+                "fields": "userEnteredValue,userEnteredFormat(horizontalAlignment,verticalAlignment,textFormat)"
             }
         },
         {
@@ -1312,10 +1375,13 @@
                     },
                     "userEnteredFormat": {
                         "horizontalAlignment": "CENTER",
-                        "verticalAlignment": "MIDDLE"
+                        "verticalAlignment": "MIDDLE",
+                        "textFormat" : {
+                            "fontSize" : 8
+                        }
                     }
                 },
-                "fields": "userEnteredValue,userEnteredFormat(horizontalAlignment,verticalAlignment)"
+                "fields": "userEnteredValue,userEnteredFormat(horizontalAlignment,verticalAlignment,textFormat)"
             }
         },
         {
@@ -1333,10 +1399,13 @@
                     },
                     "userEnteredFormat": {
                         "horizontalAlignment": "CENTER",
-                        "verticalAlignment": "MIDDLE"
+                        "verticalAlignment": "MIDDLE",
+                        "textFormat" : {
+                            "fontSize" : 8
+                        }
                     }
                 },
-                "fields": "userEnteredValue,userEnteredFormat(horizontalAlignment,verticalAlignment)"
+                "fields": "userEnteredValue,userEnteredFormat(horizontalAlignment,verticalAlignment,textFormat)"
             }
         },
         {
@@ -1354,10 +1423,13 @@
                     },
                     "userEnteredFormat": {
                         "horizontalAlignment": "CENTER",
-                        "verticalAlignment": "MIDDLE"
+                        "verticalAlignment": "MIDDLE",
+                        "textFormat" : {
+                            "fontSize" : 8
+                        }
                     }
                 },
-                "fields": "userEnteredValue,userEnteredFormat(horizontalAlignment,verticalAlignment)"
+                "fields": "userEnteredValue,userEnteredFormat(horizontalAlignment,verticalAlignment,textFormat)"
             }
         },
         {
@@ -1375,10 +1447,13 @@
                     },
                     "userEnteredFormat": {
                         "horizontalAlignment": "CENTER",
-                        "verticalAlignment": "MIDDLE"
+                        "verticalAlignment": "MIDDLE",
+                        "textFormat" : {
+                            "fontSize" : 8
+                        }
                     }
                 },
-                "fields": "userEnteredValue,userEnteredFormat(horizontalAlignment,verticalAlignment)"
+                "fields": "userEnteredValue,userEnteredFormat(horizontalAlignment,verticalAlignment,textFormat)"
             }
         },
         {
@@ -1396,10 +1471,13 @@
                     },
                     "userEnteredFormat": {
                         "horizontalAlignment": "CENTER",
-                        "verticalAlignment": "MIDDLE"
+                        "verticalAlignment": "MIDDLE",
+                        "textFormat" : {
+                            "fontSize" : 8
+                        }
                     }
                 },
-                "fields": "userEnteredValue,userEnteredFormat(horizontalAlignment,verticalAlignment)"
+                "fields": "userEnteredValue,userEnteredFormat(horizontalAlignment,verticalAlignment,textFormat)"
             }
         },
         {
@@ -1417,10 +1495,13 @@
                     },
                     "userEnteredFormat": {
                         "horizontalAlignment": "CENTER",
-                        "verticalAlignment": "MIDDLE"
+                        "verticalAlignment": "MIDDLE",
+                        "textFormat" : {
+                            "fontSize" : 8
+                        }
                     }
                 },
-                "fields": "userEnteredValue,userEnteredFormat(horizontalAlignment,verticalAlignment)"
+                "fields": "userEnteredValue,userEnteredFormat(horizontalAlignment,verticalAlignment,textFormat)"
             }
         },
         {
@@ -1438,10 +1519,13 @@
                     },
                     "userEnteredFormat": {
                         "horizontalAlignment": "CENTER",
-                        "verticalAlignment": "MIDDLE"
+                        "verticalAlignment": "MIDDLE",
+                        "textFormat" : {
+                            "fontSize" : 8
+                        }
                     }
                 },
-                "fields": "userEnteredValue,userEnteredFormat(horizontalAlignment,verticalAlignment)"
+                "fields": "userEnteredValue,userEnteredFormat(horizontalAlignment,verticalAlignment,textFormat)"
             }
         },
         {
@@ -1458,10 +1542,13 @@
                         "stringValue": "次回確認テスト"
                     },
                     "userEnteredFormat": {
-                        "horizontalAlignment": "CENTER"
+                        "horizontalAlignment": "CENTER",
+                        "textFormat" : {
+                            "fontSize" : 8
+                        }
                     }
                 },
-                "fields": "userEnteredValue,userEnteredFormat(horizontalAlignment,verticalAlignment)"
+                "fields": "userEnteredValue,userEnteredFormat(horizontalAlignment,verticalAlignment,textFormat)"
             }
         },
         {
@@ -1479,10 +1566,13 @@
                     },
                     "userEnteredFormat": {
                         "horizontalAlignment": "CENTER",
-                        "verticalAlignment": "MIDDLE"
+                        "verticalAlignment": "MIDDLE",
+                        "textFormat" : {
+                            "fontSize" : 8
+                        }
                     }
                 },
-                "fields": "userEnteredValue,userEnteredFormat(horizontalAlignment,verticalAlignment)"
+                "fields": "userEnteredValue,userEnteredFormat(horizontalAlignment,verticalAlignment,textFormat)"
             }
         },
         {
@@ -1500,10 +1590,13 @@
                     },
                     "userEnteredFormat": {
                         "horizontalAlignment": "CENTER",
-                        "verticalAlignment": "MIDDLE"
+                        "verticalAlignment": "MIDDLE",
+                        "textFormat" : {
+                            "fontSize" : 8
+                        }
                     }
                 },
-                "fields": "userEnteredValue,userEnteredFormat(horizontalAlignment,verticalAlignment)"
+                "fields": "userEnteredValue,userEnteredFormat(horizontalAlignment,verticalAlignment,textFormat)"
             }
         },
         {
@@ -1521,10 +1614,13 @@
                     },
                     "userEnteredFormat": {
                         "horizontalAlignment": "CENTER",
-                        "verticalAlignment": "MIDDLE"
+                        "verticalAlignment": "MIDDLE",
+                        "textFormat" : {
+                            "fontSize" : 8
+                        }
                     }
                 },
-                "fields": "userEnteredValue,userEnteredFormat(horizontalAlignment,verticalAlignment)"
+                "fields": "userEnteredValue,userEnteredFormat(horizontalAlignment,verticalAlignment,textFormat)"
             }
         },
         {
@@ -1542,10 +1638,13 @@
                     },
                     "userEnteredFormat": {
                         "horizontalAlignment": "CENTER",
-                        "verticalAlignment": "MIDDLE"
+                        "verticalAlignment": "MIDDLE",
+                        "textFormat" : {
+                            "fontSize" : 8
+                        }
                     }
                 },
-                "fields": "userEnteredValue,userEnteredFormat(horizontalAlignment,verticalAlignment)"
+                "fields": "userEnteredValue,userEnteredFormat(horizontalAlignment,verticalAlignment,textFormat)"
             }
         },
         {
@@ -1563,10 +1662,13 @@
                     },
                     "userEnteredFormat": {
                         "horizontalAlignment": "CENTER",
-                        "verticalAlignment": "MIDDLE"
+                        "verticalAlignment": "MIDDLE",
+                        "textFormat" : {
+                            "fontSize" : 8
+                        }
                     }
                 },
-                "fields": "userEnteredValue,userEnteredFormat(horizontalAlignment,verticalAlignment)"
+                "fields": "userEnteredValue,userEnteredFormat(horizontalAlignment,verticalAlignment,textFormat)"
             }
         },
         {
@@ -1584,10 +1686,13 @@
                     },
                     "userEnteredFormat": {
                         "horizontalAlignment": "CENTER",
-                        "verticalAlignment": "MIDDLE"
+                        "verticalAlignment": "MIDDLE",
+                        "textFormat" : {
+                            "fontSize" : 8
+                        }
                     }
                 },
-                "fields": "userEnteredValue,userEnteredFormat(horizontalAlignment,verticalAlignment)"
+                "fields": "userEnteredValue,userEnteredFormat(horizontalAlignment,verticalAlignment,textFormat)"
             }
         },
         {
@@ -1605,10 +1710,13 @@
                     },
                     "userEnteredFormat": {
                         "horizontalAlignment": "CENTER",
-                        "verticalAlignment": "MIDDLE"
+                        "verticalAlignment": "MIDDLE",
+                        "textFormat" : {
+                            "fontSize" : 8
+                        }
                     }
                 },
-                "fields": "userEnteredValue,userEnteredFormat(horizontalAlignment,verticalAlignment)"
+                "fields": "userEnteredValue,userEnteredFormat(horizontalAlignment,verticalAlignment,textFormat)"
             }
         },
         {
@@ -1626,10 +1734,13 @@
                     },
                     "userEnteredFormat": {
                         "horizontalAlignment": "CENTER",
-                        "verticalAlignment": "MIDDLE"
+                        "verticalAlignment": "MIDDLE",
+                        "textFormat" : {
+                            "fontSize" : 8
+                        }
                     }
                 },
-                "fields": "userEnteredValue,userEnteredFormat(horizontalAlignment,verticalAlignment)"
+                "fields": "userEnteredValue,userEnteredFormat(horizontalAlignment,verticalAlignment,textFormat)"
             }
         },
         {
@@ -1647,10 +1758,13 @@
                     },
                     "userEnteredFormat": {
                         "horizontalAlignment": "CENTER",
-                        "verticalAlignment": "MIDDLE"
+                        "verticalAlignment": "MIDDLE",
+                        "textFormat" : {
+                            "fontSize" : 8
+                        }
                     }
                 },
-                "fields": "userEnteredValue,userEnteredFormat(horizontalAlignment,verticalAlignment)"
+                "fields": "userEnteredValue,userEnteredFormat(horizontalAlignment,verticalAlignment,textFormat)"
             }
         },
         {
@@ -1668,10 +1782,13 @@
                     },
                     "userEnteredFormat": {
                         "horizontalAlignment": "CENTER",
-                        "verticalAlignment": "MIDDLE"
+                        "verticalAlignment": "MIDDLE",
+                        "textFormat" : {
+                            "fontSize" : 8
+                        }
                     }
                 },
-                "fields": "userEnteredValue,userEnteredFormat(horizontalAlignment,verticalAlignment)"
+                "fields": "userEnteredValue,userEnteredFormat(horizontalAlignment,verticalAlignment,textFormat)"
             }
         },
         {
@@ -1688,10 +1805,13 @@
                         "stringValue": "次回授業予定"	
                     },
                     "userEnteredFormat": {
-                        "horizontalAlignment": "CENTER"
+                        "horizontalAlignment": "CENTER",
+                        "textFormat" : {
+                            "fontSize" : 8
+                        }
                     }
                 },
-                "fields": "userEnteredValue,userEnteredFormat(horizontalAlignment,verticalAlignment)"
+                "fields": "userEnteredValue,userEnteredFormat(horizontalAlignment,verticalAlignment,textFormat)"
             }
         },
         {
@@ -1709,10 +1829,13 @@
                     },
                     "userEnteredFormat": {
                         "horizontalAlignment": "CENTER",
-                        "verticalAlignment": "MIDDLE"
+                        "verticalAlignment": "MIDDLE",
+                        "textFormat" : {
+                            "fontSize" : 8
+                        }
                     }
                 },
-                "fields": "userEnteredValue,userEnteredFormat(horizontalAlignment,verticalAlignment)"
+                "fields": "userEnteredValue,userEnteredFormat(horizontalAlignment,verticalAlignment,textFormat)"
             }
         },
         {
@@ -1730,10 +1853,13 @@
                     },
                     "userEnteredFormat": {
                         "horizontalAlignment": "CENTER",
-                        "verticalAlignment": "MIDDLE"
+                        "verticalAlignment": "MIDDLE",
+                        "textFormat" : {
+                            "fontSize" : 8
+                        }
                     }
                 },
-                "fields": "userEnteredValue,userEnteredFormat(horizontalAlignment,verticalAlignment)"
+                "fields": "userEnteredValue,userEnteredFormat(horizontalAlignment,verticalAlignment,textFormat)"
             }
         }
     ]
