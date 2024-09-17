@@ -20,12 +20,6 @@ class MakeNewReport(SpreadsheetService):
         self.newsheet_setting = load_json(newsheet_setting_path)
         self.position = position
         self.sheetID = sheetID
-    
-    def copy_template(self):
-        """
-        テンプレートをコピーして貼り付ける処理をする
-        """
-        pass
 
     def apply_json_to_sheet(self):
         """
