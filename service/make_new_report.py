@@ -3,7 +3,6 @@ from transform_data import load_json
 from dotenv import load_dotenv
 import os
 from googleapiclient.discovery import build
-import json
 import os
 
 load_dotenv()
@@ -46,7 +45,7 @@ class MakeNewReport(SpreadsheetService):
                     # 負の値を避けるためにmax()を使ってインデックスを修正
                     request["mergeCells"]["range"]["startColumnIndex"] = max(0, self.position + start_col)
                     request["mergeCells"]["range"]["endColumnIndex"] = max(0, self.position + end_col)
-                
+
                 # repeatCell の処理
                 elif "range" in request.get("repeatCell", {}):
                     request["repeatCell"]["range"]["sheetId"] = self.sheetID
@@ -55,7 +54,16 @@ class MakeNewReport(SpreadsheetService):
                     # 負の値を避けるためにmax()を使ってインデックスを修正
                     request["repeatCell"]["range"]["startColumnIndex"] = max(0, self.position + start_col)
                     request["repeatCell"]["range"]["endColumnIndex"] = max(0, self.position + end_col)
-                    
+
+                # updateBorders の処理
+                elif "range" in request.get("updateBorders", {}):
+                    request["updateBorders"]["range"]["sheetId"] = self.sheetID
+                    start_col = request["updateBorders"]["range"]["startColumnIndex"]
+                    end_col = request["updateBorders"]["range"]["endColumnIndex"]
+                    # 負の値を避けるためにmax()を使ってインデックスを修正
+                    request["updateBorders"]["range"]["startColumnIndex"] = max(0, self.position + start_col)
+                    request["updateBorders"]["range"]["endColumnIndex"] = max(0, self.position + end_col)
+
             except Exception as e:
                 print(e)
                 continue
