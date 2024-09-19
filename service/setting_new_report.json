@@ -3085,6 +3085,289 @@
                     }
                 }
             }
+        },
+        {
+            "repeatCell": {
+                "range": {
+                    "sheetId": 0,
+                    "startRowIndex": 0,
+                    "endRowIndex": 1,
+                    "startColumnIndex": 2,
+                    "endColumnIndex": 3
+                },
+                "cell": {
+                    "dataValidation": {
+                        "condition": {
+                            "type": "ONE_OF_LIST",
+                            "values": [
+                                {"userEnteredValue": "英語"},
+                                {"userEnteredValue": "数学"},
+                                {"userEnteredValue": "算数"},
+                                {"userEnteredValue": "理科"},
+                                {"userEnteredValue": "社会"},
+                                {"userEnteredValue": "特色"},
+                                {"userEnteredValue": "その他"}
+                            ]
+                        },
+                        "strict": true,
+                        "showCustomUi": true
+                    }
+                },
+                "fields": "dataValidation"
+            }
+        },
+        {
+            "repeatCell": {
+                "range": {
+                    "sheetId": 0,
+                    "startRowIndex": 1,
+                    "endRowIndex": 3,
+                    "startColumnIndex": 2,
+                    "endColumnIndex": 3
+                },
+                "cell": {
+                    "dataValidation": {
+                        "condition": {
+                            "type": "ONE_OF_LIST",
+                            "values": [
+                                {"userEnteredValue": "100%"},
+                                {"userEnteredValue": "80%"},
+                                {"userEnteredValue": "60%"},
+                                {"userEnteredValue": "40%"},
+                                {"userEnteredValue": "40%以下"},
+                                {"userEnteredValue": "未完"},
+                                {"userEnteredValue": "連続"},
+                                {"userEnteredValue": "体験"},
+                                {"userEnteredValue": "初回"}
+                            ]
+                        },
+                        "strict": true,
+                        "showCustomUi": true
+                    }
+                },
+                "fields": "dataValidation"
+            }
+        },
+        {
+            "repeatCell": {
+                "range": {
+                    "sheetId": 0,
+                    "startRowIndex": 1,
+                    "endRowIndex": 3,
+                    "startColumnIndex": 4,
+                    "endColumnIndex": 5
+                },
+                "cell": {
+                    "dataValidation": {
+                        "condition": {
+                            "type": "ONE_OF_LIST",
+                            "values": [
+                                {"userEnteredValue": "100%"},
+                                {"userEnteredValue": "80%"},
+                                {"userEnteredValue": "60%"},
+                                {"userEnteredValue": "40%"},
+                                {"userEnteredValue": "40%以下"},
+                                {"userEnteredValue": "未完"},
+                                {"userEnteredValue": "連続"},
+                                {"userEnteredValue": "体験"},
+                                {"userEnteredValue": "初回"}
+                            ]
+                        },
+                        "strict": true,
+                        "showCustomUi": true
+                    }
+                },
+                "fields": "dataValidation"
+            }
+        },
+        {
+            "repeatCell": {
+                "range": {
+                    "sheetId": 0,
+                    "startRowIndex": 7,
+                    "endRowIndex": 8,
+                    "startColumnIndex": -1,
+                    "endColumnIndex": 0
+                },
+                "cell": {
+                    "dataValidation": {
+                        "condition": {
+                            "type": "ONE_OF_LIST",
+                            "values": [
+                                {"userEnteredValue": "100%"},
+                                {"userEnteredValue": "80%"},
+                                {"userEnteredValue": "60%"},
+                                {"userEnteredValue": "40%"},
+                                {"userEnteredValue": "40%以下"},
+                                {"userEnteredValue": "未完"},
+                                {"userEnteredValue": "連続"},
+                                {"userEnteredValue": "体験"},
+                                {"userEnteredValue": "初回"}
+                            ]
+                        },
+                        "strict": true,
+                        "showCustomUi": true
+                    }
+                },
+                "fields": "dataValidation"
+            }
+        },
+        {
+            "repeatCell": {
+                "range": {
+                    "sheetId": 0,
+                    "startRowIndex": 10,
+                    "endRowIndex": 13,
+                    "startColumnIndex": 1,
+                    "endColumnIndex": 2
+                },
+                "cell": {
+                    "dataValidation": {
+                        "condition": {
+                            "type": "ONE_OF_LIST",
+                            "values": [
+                                {"userEnteredValue": "100%"},
+                                {"userEnteredValue": "80%"},
+                                {"userEnteredValue": "60%"},
+                                {"userEnteredValue": "40%"},
+                                {"userEnteredValue": "40%以下"},
+                                {"userEnteredValue": "未完"},
+                                {"userEnteredValue": "連続"},
+                                {"userEnteredValue": "体験"},
+                                {"userEnteredValue": "初回"}
+                            ]
+                        },
+                        "strict": true,
+                        "showCustomUi": true
+                    }
+                },
+                "fields": "dataValidation"
+            }
+        },
+        {
+            "repeatCell": {
+                "range": {
+                    "sheetId": 0,
+                    "startRowIndex": 10,
+                    "endRowIndex": 13,
+                    "startColumnIndex": 4,
+                    "endColumnIndex": 5
+                },
+                "cell": {
+                    "dataValidation": {
+                        "condition": {
+                            "type": "ONE_OF_LIST",
+                            "values": [
+                                {"userEnteredValue": "100%"},
+                                {"userEnteredValue": "80%"},
+                                {"userEnteredValue": "60%"},
+                                {"userEnteredValue": "40%"},
+                                {"userEnteredValue": "40%以下"},
+                                {"userEnteredValue": "未完"},
+                                {"userEnteredValue": "連続"},
+                                {"userEnteredValue": "体験"},
+                                {"userEnteredValue": "初回"}
+                            ]
+                        },
+                        "strict": true,
+                        "showCustomUi": true
+                    }
+                },
+                "fields": "dataValidation"
+            }
+        },
+        {
+            "repeatCell": {
+                "range": {
+                    "sheetId": 0,
+                    "startRowIndex": 26,
+                    "endRowIndex": 27,
+                    "startColumnIndex": 0,
+                    "endColumnIndex": 1
+                },
+                "cell": {
+                    "dataValidation": {
+                        "condition": {
+                            "type": "ONE_OF_LIST",
+                            "values": [
+                                {"userEnteredValue": "CT"},
+                                {"userEnteredValue": "LCT"},
+                                {"userEnteredValue": "PT"},
+                                {"userEnteredValue": "英単語"},
+                                {"userEnteredValue": "i+1部"},
+                                {"userEnteredValue": "i+2部"},
+                                {"userEnteredValue": "S単確"},
+                                {"userEnteredValue": "その他"}
+                            ]
+                        },
+                        "strict": true,
+                        "showCustomUi": true
+                    }
+                },
+                "fields": "dataValidation"
+            }
+        },
+        {
+            "repeatCell": {
+                "range": {
+                    "sheetId": 0,
+                    "startRowIndex": 28,
+                    "endRowIndex": 29,
+                    "startColumnIndex": 0,
+                    "endColumnIndex": 1
+                },
+                "cell": {
+                    "dataValidation": {
+                        "condition": {
+                            "type": "ONE_OF_LIST",
+                            "values": [
+                                {"userEnteredValue": "CT"},
+                                {"userEnteredValue": "LCT"},
+                                {"userEnteredValue": "PT"},
+                                {"userEnteredValue": "英単語"},
+                                {"userEnteredValue": "i+1部"},
+                                {"userEnteredValue": "i+2部"},
+                                {"userEnteredValue": "S単確"},
+                                {"userEnteredValue": "その他"}
+                            ]
+                        },
+                        "strict": true,
+                        "showCustomUi": true
+                    }
+                },
+                "fields": "dataValidation"
+            }
+        },
+        {
+            "repeatCell": {
+                "range": {
+                    "sheetId": 0,
+                    "startRowIndex": 30,
+                    "endRowIndex": 31,
+                    "startColumnIndex": 0,
+                    "endColumnIndex": 1
+                },
+                "cell": {
+                    "dataValidation": {
+                        "condition": {
+                            "type": "ONE_OF_LIST",
+                            "values": [
+                                {"userEnteredValue": "CT"},
+                                {"userEnteredValue": "LCT"},
+                                {"userEnteredValue": "PT"},
+                                {"userEnteredValue": "英単語"},
+                                {"userEnteredValue": "i+1部"},
+                                {"userEnteredValue": "i+2部"},
+                                {"userEnteredValue": "S単確"},
+                                {"userEnteredValue": "その他"}
+                            ]
+                        },
+                        "strict": true,
+                        "showCustomUi": true
+                    }
+                },
+                "fields": "dataValidation"
+            }
         }
     ]
 }
