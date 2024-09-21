@@ -24,6 +24,7 @@ class MakeNewReport(SpreadsheetService):
         """
         Jsonファイルを読み込み、セル結合、セルの塗りつぶしを反映する
         """
+        self.add_columns()
         for i in range(1, NUMBER_OF_SHEET+1):
             self.molding_json(i * MARGE_COLUMN)
         
@@ -72,3 +73,48 @@ class MakeNewReport(SpreadsheetService):
             except Exception as e:
                 print(f"Error in iteration {iteration}: {e}")
                 continue
+
+    def add_columns(self):
+        """
+        Add columns to the specified sheet.
+        Adjusts the number of columns added based on the current grid size and position.
+        """
+        # Get the current grid size
+        sheet_metadata = self.service.spreadsheets().get(spreadsheetId=self.fileID).execute()
+        sheets = sheet_metadata.get('sheets', '')
+        
+        max_columns = 0
+
+        for sheet in sheets:
+            if sheet['properties']['sheetId'] == self.sheetID:
+                grid_properties = sheet['properties']['gridProperties']
+                max_columns = grid_properties['columnCount']  # Get the current number of columns
+                print('max_columns:', max_columns)
+
+        try:
+            requests = [{
+                "insertDimension": {
+                    "range": {
+                        "sheetId": self.sheetID,
+                        "dimension": "COLUMNS",
+                        "startIndex": max_columns - 1,
+                        "endIndex": max_columns + NUMBER_OF_SHEET * MARGE_COLUMN 
+                    },
+                    "inheritFromBefore": False
+                }
+            }]
+
+            body = {
+                'requests': requests
+            }
+
+            # batchUpdateリクエストの送信
+            self.service.spreadsheets().batchUpdate(
+                spreadsheetId=self.fileID,
+                body=body
+            ).execute()
+
+            print(f"Added {NUMBER_OF_SHEET} columns to sheet with ID {self.sheetID}")
+        
+        except Exception as e:
+            print(e)
