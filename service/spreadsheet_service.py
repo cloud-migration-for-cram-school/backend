@@ -7,6 +7,8 @@ from openpyxl.utils import get_column_letter
 from dotenv import load_dotenv
 import os
 
+from service.make_new_report import MakeNewReport
+
 # .envファイルから環境変数を読み込む
 load_dotenv()
 
@@ -30,6 +32,7 @@ class SpreadsheetService:
             API_PATH,
             scopes = SCOPES
         )
+        self.file_id = fileID
         self.sheet_url = f'https://docs.google.com/spreadsheets/d/{fileID}/edit?usp=sharing'
         self.gc = gspread.authorize(self.credentials)
         self.spreadsheet = self.gc.open_by_url(self.sheet_url)
@@ -56,7 +59,8 @@ class SpreadsheetService:
         引数 subject_id:シートID, start_row:指数探索後の位置
         return valueDate: 日付, row: 位置
         """
-        self.sheet = self.spreadsheet.get_worksheet_by_id(subject_id)
+        self.subject_id = subject_id
+        self.sheet = self.spreadsheet.get_worksheet_by_id(self.subject_id)
         dates_positions = []
         
         while True:
@@ -107,6 +111,8 @@ class SpreadsheetService:
         except Exception as e:
             print(f'報告書の残りの枚数が{empty_cell_count}枚です。')
             print(f'except nearcompar date : {e}')
+            newreport = MakeNewReport(sheetID=self.subject_id, fileID=self.file_id, position=position)
+            newreport.apply_json_to_sheet()
             return dates_positions, empty_cell_count
 
     def get_old_sheet_data(self, postionCell, subject_id):
