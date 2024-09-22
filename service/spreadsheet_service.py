@@ -102,14 +102,12 @@ class SpreadsheetService:
             return dates_positions, ""
 
         except APIError as e:
-            print(f'報告書の残りの枚数が{empty_cell_count}枚です。')
             print(f'範囲外になりました\n{e}')
             return dates_positions, empty_cell_count
 
         except Exception as e:
-            print(f'報告書の残りの枚数が{empty_cell_count}枚です。')
             print(f'except nearcompar date : {e}')
-            newreport = make_new_report.MakeNewReport(sheetID=self.subject_id, fileID=self.file_id, position=position)
+            newreport = make_new_report.MakeNewReport(sheetID=self.subject_id, fileID=self.file_id, position=position - 1)
             newreport.apply_json_to_sheet()
             return dates_positions, empty_cell_count
 

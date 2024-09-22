@@ -17,7 +17,7 @@ class MakeNewReport(service.spreadsheet_service_init.SpreadsheetServiceInit):
         super().__init__(fileID)
         self.fileID = fileID
         self.service = build('sheets', 'v4', credentials=self.credentials)
-        self.position = position - 1  # 微調整
+        self.position = position
         self.sheetID = sheetID
 
     def apply_json_to_sheet(self):
@@ -25,6 +25,7 @@ class MakeNewReport(service.spreadsheet_service_init.SpreadsheetServiceInit):
         Jsonファイルを読み込み、セル結合、セルの塗りつぶしを反映する
         """
         self.add_columns()
+        print('何でだ' ,self.position)
         for i in range(0, NUMBER_OF_SHEET):
             self.molding_json(i * MARGE_COLUMN)
             # batchUpdateリクエストの送信
@@ -95,8 +96,8 @@ class MakeNewReport(service.spreadsheet_service_init.SpreadsheetServiceInit):
                     "range": {
                         "sheetId": self.sheetID,
                         "dimension": "COLUMNS",
-                        "startIndex": max_columns - 1,
-                        "endIndex": max_columns + NUMBER_OF_SHEET * MARGE_COLUMN - 1
+                        "startIndex": max_columns - 1, # 0がindexのため-1でエラー対策
+                        "endIndex": max_columns + NUMBER_OF_SHEET * MARGE_COLUMN - 1 # 一番右側が一列余るように調整
                     },
                     "inheritFromBefore": False
                 }
