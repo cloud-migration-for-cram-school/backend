@@ -7,13 +7,11 @@ from openpyxl.utils import get_column_letter
 from dotenv import load_dotenv
 import os
 
-from service.make_new_report import MakeNewReport
+import service.make_new_report as make_new_report
 
 # .envファイルから環境変数を読み込む
 load_dotenv()
-
 API_PATH = os.getenv('API_PATH')
-FOLDER_ID = os.getenv('FOLDER_ID')
 
 #google driveに設定
 SCOPES = ['https://www.googleapis.com/auth/drive']
@@ -111,7 +109,7 @@ class SpreadsheetService:
         except Exception as e:
             print(f'報告書の残りの枚数が{empty_cell_count}枚です。')
             print(f'except nearcompar date : {e}')
-            newreport = MakeNewReport(sheetID=self.subject_id, fileID=self.file_id, position=position)
+            newreport = make_new_report.MakeNewReport(sheetID=self.subject_id, fileID=self.file_id, position=position)
             newreport.apply_json_to_sheet()
             return dates_positions, empty_cell_count
 

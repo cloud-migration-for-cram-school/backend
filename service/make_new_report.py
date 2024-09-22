@@ -1,5 +1,5 @@
-from spreadsheet_service import SpreadsheetService
-from transform_data import load_json
+import service.spreadsheet_service_init
+from service.transform_data import load_json
 from dotenv import load_dotenv
 import os
 from googleapiclient.discovery import build
@@ -12,12 +12,12 @@ newsheet_setting_path = os.getenv('NEWSHEET_SETTING')
 NUMBER_OF_SHEET = 10 # 新しく作るシートの枚数
 MARGE_COLUMN = 7 # シートの間隔
 
-class MakeNewReport(SpreadsheetService):
+class MakeNewReport(service.spreadsheet_service_init.SpreadsheetServiceInit):
     def __init__(self, fileID=None, sheetID=None, position=None):
         super().__init__(fileID)
         self.fileID = fileID
         self.service = build('sheets', 'v4', credentials=self.credentials)
-        self.position = position
+        self.position = position - 1  # 微調整
         self.sheetID = sheetID
 
     def apply_json_to_sheet(self):
@@ -25,15 +25,13 @@ class MakeNewReport(SpreadsheetService):
         Jsonファイルを読み込み、セル結合、セルの塗りつぶしを反映する
         """
         self.add_columns()
-        for i in range(1, NUMBER_OF_SHEET+1):
+        for i in range(0, NUMBER_OF_SHEET):
             self.molding_json(i * MARGE_COLUMN)
-        
             # batchUpdateリクエストの送信
             self.service.spreadsheets().batchUpdate(
                 spreadsheetId=self.fileID,
                 body=self.newsheet_setting
             ).execute()
-
 
     def molding_json(self, iteration):
         """
@@ -98,7 +96,7 @@ class MakeNewReport(SpreadsheetService):
                         "sheetId": self.sheetID,
                         "dimension": "COLUMNS",
                         "startIndex": max_columns - 1,
-                        "endIndex": max_columns + NUMBER_OF_SHEET * MARGE_COLUMN 
+                        "endIndex": max_columns + NUMBER_OF_SHEET * MARGE_COLUMN - 1
                     },
                     "inheritFromBefore": False
                 }
