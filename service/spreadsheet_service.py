@@ -7,11 +7,11 @@ from openpyxl.utils import get_column_letter
 from dotenv import load_dotenv
 import os
 
+import service.make_new_report as make_new_report
+
 # .envファイルから環境変数を読み込む
 load_dotenv()
-
 API_PATH = os.getenv('API_PATH')
-FOLDER_ID = os.getenv('FOLDER_ID')
 
 #google driveに設定
 SCOPES = ['https://www.googleapis.com/auth/drive']
@@ -26,12 +26,13 @@ NOTIFICATION_THRESHOLD = 5  # 空の報告書が5未満になったら通知を�
 
 class SpreadsheetService:
     def __init__(self, fileID=None):
-        credentials = Credentials.from_service_account_file(
+        self.credentials = Credentials.from_service_account_file(
             API_PATH,
             scopes = SCOPES
         )
+        self.file_id = fileID
         self.sheet_url = f'https://docs.google.com/spreadsheets/d/{fileID}/edit?usp=sharing'
-        self.gc = gspread.authorize(credentials)
+        self.gc = gspread.authorize(self.credentials)
         self.spreadsheet = self.gc.open_by_url(self.sheet_url)
 
     def get_worksheets(self):
@@ -56,7 +57,8 @@ class SpreadsheetService:
         引数 subject_id:シートID, start_row:指数探索後の位置
         return valueDate: 日付, row: 位置
         """
-        self.sheet = self.spreadsheet.get_worksheet_by_id(subject_id)
+        self.subject_id = subject_id
+        self.sheet = self.spreadsheet.get_worksheet_by_id(self.subject_id)
         dates_positions = []
         
         while True:
@@ -100,13 +102,13 @@ class SpreadsheetService:
             return dates_positions, ""
 
         except APIError as e:
-            print(f'報告書の残りの枚数が{empty_cell_count}枚です。')
             print(f'範囲外になりました\n{e}')
             return dates_positions, empty_cell_count
 
         except Exception as e:
-            print(f'報告書の残りの枚数が{empty_cell_count}枚です。')
             print(f'except nearcompar date : {e}')
+            newreport = make_new_report.MakeNewReport(sheetID=self.subject_id, fileID=self.file_id, position=position - 1)
+            newreport.apply_json_to_sheet()
             return dates_positions, empty_cell_count
 
     def get_old_sheet_data(self, postionCell, subject_id):
