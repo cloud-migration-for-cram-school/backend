@@ -1,0 +1,17 @@
+{
+  "projectName": "cloudBackend",
+  "version": "3.1",
+  "frontend": "javascript",
+  "javascript": {
+    "framework": "none",
+    "config": {
+      "SourceDir": ".",
+      "DistributionDir": "dist",
+      "BuildCommand": "echo \"No build necessary\"",
+      "StartCommand": "echo \"No start necessary\""
+    }
+  },
+  "providers": [
+    "awscloudformation"
+  ]
+}
