@@ -26,3 +26,8 @@ amplifytools.xcconfig
 amplify/cli.json
 amplify/team-provider-info.json
 amplify/backend/backend-config.json
+amplify/backend/function/submitReport/submitReport-cloudformation-template.json
+amplify/backend/function/getDriveFileInfo/getDriveFileInfo-cloudformation-template.json
+amplify/backend/function/getReport/getReport-cloudformation-template.json
+amplify/backend/function/getSubjectList/getSubjectList-cloudformation-template.json
+amplify/backend/function/submitReportOld/submitReportOld-cloudformation-template.json

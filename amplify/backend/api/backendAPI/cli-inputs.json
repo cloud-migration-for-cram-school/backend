@@ -1,0 +1,40 @@
+{
+  "version": 1,
+  "paths": {
+    "/getDriveFileInfo": {
+      "name": "/getDriveFileInfo",
+      "lambdaFunction": "getDriveFileInfo",
+      "permissions": {
+        "setting": "open"
+      }
+    },
+    "/getSubjectList": {
+      "name": "/getSubjectList",
+      "lambdaFunction": "getSubjectList",
+      "permissions": {
+        "setting": "open"
+      }
+    },
+    "/getReport": {
+      "name": "/getReport",
+      "lambdaFunction": "getReport",
+      "permissions": {
+        "setting": "open"
+      }
+    },
+    "/submitReport": {
+      "name": "/submitReport",
+      "lambdaFunction": "submitReport",
+      "permissions": {
+        "setting": "open"
+      }
+    },
+    "/submitReportOld": {
+      "name": "/submitReportOld",
+      "lambdaFunction": "submitReportOld",
+      "permissions": {
+        "setting": "open"
+      }
+    }
+  }
+}
