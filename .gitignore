@@ -31,3 +31,8 @@ amplify/backend/function/getDriveFileInfo/getDriveFileInfo-cloudformation-templa
 amplify/backend/function/getReport/getReport-cloudformation-template.json
 amplify/backend/function/getSubjectList/getSubjectList-cloudformation-template.json
 amplify/backend/function/submitReportOld/submitReportOld-cloudformation-template.json
+amplify/backend/function/getDriveFileInfo/Pipfile.lock
+amplify/backend/function/getReport/Pipfile.lock
+amplify/backend/function/submitReport/Pipfile.lock
+amplify/backend/function/submitReportOld/Pipfile.lock
+amplify/backend/function/getSubjectList/Pipfile.lock
